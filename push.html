@@ -137,6 +137,7 @@
                     var textarea = document.createElement("textarea");
                     textarea.textContent = copyText;
                     textarea.style.position = "fixed"; // Prevent scrolling to bottom of page in MS Edge.
+                    textarea.style.textTransform = "none";
                     document.body.appendChild(textarea);
                     textarea.select();
                     document.execCommand("copy"); 

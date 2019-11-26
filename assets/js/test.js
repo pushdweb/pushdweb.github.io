@@ -5,7 +5,7 @@ var swRegistration = null;
 var isSubscribed = false;
 const applicationServerPublicKey = 'BJEmLHcgkIMhmtM1RvtUtpg01ue_ZJUrWxY42_IlR5KgNMjKHH8DT9bM4xP8w9CJOJpyf2_dVpORdS99vPoFnSQ';
 
-$.getScript('https://www.gstatic.com/firebasejs/7.4.0/firebase-app.js', function()
+/*$.getScript('https://www.gstatic.com/firebasejs/7.4.0/firebase-app.js', function()
 {
     $.getScript('https://www.gstatic.com/firebasejs/7.4.0/firebase-database.js', function()
     {   
@@ -22,7 +22,7 @@ $.getScript('https://www.gstatic.com/firebasejs/7.4.0/firebase-app.js', function
         };
         // Initialize Firebase
         var empushyApp = firebase.initializeApp(firebaseConfig, "empushyApp");
-        db = empushyApp.database();
+        db = empushyApp.database();*/
         
         /* Check if service workers and push messaging is supported by the browser */
         if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -43,8 +43,10 @@ $.getScript('https://www.gstatic.com/firebasejs/7.4.0/firebase-app.js', function
           console.warn('Push messaging is not supported');
         }
         
+/*
     });
 });
+*/
 
 /* Set button text depending if user subbed or not */
 function initializeUI() {
@@ -94,15 +96,46 @@ function subButtonClick(){
 function unsubscribeUser() {
   swRegistration.pushManager.getSubscription()
   .then(function(subscription) {
+    
+      
     if (subscription) {
-      return subscription.unsubscribe();
+        // unsub api call using subscription object to search for applicable sub
+        const params = new URLSearchParams(window.location.search);  
+        var subId = params.get("p");
+        var subUrl = "http://localhost:5000/v1/unsub";
+
+        var formData = JSON.stringify({
+            "userId": null,
+            "subId": subId,
+            "subInfo": subscription            
+        })
+
+        $.ajax ({
+            url: subUrl,
+            type: "POST",
+            data: formData,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            success: function(data) {
+                try{
+                    alert('Unsubbed');
+                }
+                catch(err){}
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                alert('Could not subscribe at this time'); 
+            } 
+        });
+        
+        return subscription.unsubscribe();
     }
   })
   .catch(function(error) {
     console.log('Error unsubscribing', error);
   })
   .then(function() {
-    updateSubscriptionOnServer(null);
+    //updateSubscriptionOnServer(null);
 
     console.log('User is unsubscribed.');
     isSubscribed = false;
@@ -136,7 +169,37 @@ function updateSubscriptionOnServer(subscription) {
   // TODO: Send subscription to application server
 
   if (subscription) {
-    console.log(JSON.stringify(subscription));
+    const params = new URLSearchParams(window.location.search);  
+    var subId = params.get("p");
+    var subInfo = subscription
+
+    console.log(subId)
+    var subUrl = "http://localhost:5000/v1/sub";
+
+    var formData = JSON.stringify({
+        "userId": null,
+        "subId": subId,
+        "subInfo": subInfo            
+    })
+
+    $.ajax ({
+        url: subUrl,
+        type: "POST",
+        data: formData,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true,
+        success: function(data) {
+            try{
+                alert('Subbed');
+            }
+            catch(err){}
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) { 
+            alert('Could not subscribe at this time'); 
+        } 
+    });
+      
   } else {
     console.log('subscription was null')
   }
