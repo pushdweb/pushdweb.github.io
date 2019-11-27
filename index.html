@@ -26,8 +26,8 @@
 							<span><img src="images/empushy_white_no_caption.png" alt="" style="width: 100%;"/></span>
 						</header>
                         <div id="firebaseui-auth-container"></div>
-						<footer>
-							
+						<footer style="color: white; padding: 2%;">
+							<small>No account yet? <br>Enter your email above to get started!</small>
 						</footer>
 					</section>
 
@@ -97,7 +97,9 @@
                     // Initialize the FirebaseUI Widget using Firebase.
                     var ui = new firebaseui.auth.AuthUI(firebase.auth());
                     // The start method will wait until the DOM is loaded.
-                    ui.start('#firebaseui-auth-container', uiConfig);
+                    ui.start('#firebaseui-auth-container', uiConfig)
+                    
+                    
                 }
                 function initApp() {
                     firebase.auth().onAuthStateChanged(function(user) {
@@ -105,8 +107,9 @@
                             // User is signed in.
                             var email = user.email;
                             var uid = user.uid;
+                            localStorage.setItem('userId', uid);
                             
-                            window.location.replace("/push.html");
+                            window.location.replace("/profile.html");
                         } else {
                             // User is signed out.
                             setupLogin();

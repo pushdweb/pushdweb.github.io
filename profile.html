@@ -11,6 +11,28 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+        
+        <style>
+            .edit-icon {
+                opacity: 40%;
+                color: #cc796b;
+                cursor: pointer;
+                float: right;
+                margin: auto;
+                line-height: 1.5;
+                font-style: oblique;
+                font-size: x-large;
+            }
+            
+            .field {
+                margin-top: 2%;  
+                margin-bottom: 2%; 
+            }
+            
+            .hidden {
+                display: none!important;
+            }
+        </style>
 	</head>
 	<body class="is-preload">
 
@@ -18,11 +40,22 @@
 			<div id="wrapper">
 
 				<!-- Main -->
+                    <img src="images/empushy_white_no_caption.png" style="width: 10%; cursor: pointer;" onclick="window.location.replace('/')"/>
 					<section id="main">
 						<header>
-							<span class="avatar"><img src="images/avatar.jpg" alt="" /></span>
-							<h1>Jane Doe</h1>
-							<p>Senior Psychonautics Engineer</p>
+							<span class="avatar">
+                                <img src="images/avatar.jpg" alt=""/>
+                                <i id='toshareIcon' onclick="copyShareLink()" class="far fa-clipboard" style="cursor: pointer;"></i>
+                                <small id='toshare' style="font-size: x-small; letter-spacing: normal; font-family: inherit; text-transform: none;"></small>
+                            </span>
+							<h1 id="profileName" class="hidden">Jane Doe</h1>
+                            <div class="field">
+                                <input type="text" id="editName" placeholder="Jane Doe"/>
+                            </div>
+							<p id="tagline" class="hidden">Tagline</p>
+                            <div class="field">
+                                <input type="text" id="editTagline" placeholder="Tagline" />
+                            </div>
 						</header>
 						<!--
 						<hr />
@@ -62,19 +95,39 @@
 						<hr />
 						-->
 						<footer>
+                            <hr>
 							<ul class="icons">
-								<li><a href="#" class="icon brands fa-twitter">Twitter</a></li>
-								<li><a href="#" class="icon brands fa-instagram">Instagram</a></li>
-								<li><a href="#" class="icon brands fa-facebook-f">Facebook</a></li>
+								<li id="twitterField" class="hidden"><a id="twitterLink" href="#" target="_blank" class="icon brands fa-twitter">Twitter</a></li>
+                                <li id="editTwitterField">
+                                    <div class="field">
+                                        <input type="text" id="editTwitter" placeholder="Twitter link" />
+                                    </div>
+                                </li>
+								<li id="instagramField" class="hidden"><a id="instagramLink" href="#" target="_blank" class="icon brands fa-instagram">Instagram</a></li>
+								<li id="editInstagramField">
+                                    <div class="field" >
+                                        <input type="text" id="editInstagram" placeholder="Instagram link" />
+                                    </div>
+                                </li>
+								<li id="facebookField" class="hidden"><a id="facebookLink" href="#" target="_blank" class="icon brands fa-facebook-f">Facebook</a></li>
+								<li  id="editFacebookField">
+                                    <div class="field">
+                                        <input type="text" id="editFacebook" placeholder="Facebook link" />
+                                    </div>
+                                </li>
 							</ul>
                             <button id='subButton' class="button" onclick="subButtonClick()" disabled>Subscribe</button>
+							<button id='logoutButton' class="button" onclick="logout()">Logout</button>
+                            <button id='editButton' class="button" onclick="edit()">Edit</button>
+                            <button id='saveButton' class="button" onclick="save()">Save</button>
+                            <button id='pushButton' class="button" onclick="window.location.replace('/push.html')">Push</button>
 						</footer>
 					</section>
 
 				<!-- Footer -->
 					<footer id="footer">
 						<ul class="copyright">
-							<li>&copy; Jane Doe</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							<li>&copy; EmPushy</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
 						</ul>
 					</footer>
 
@@ -115,20 +168,236 @@
                     initApp();
                 });
                 
-                function initApp() {
+                function getPublicInfo(uid){
+                    
+                    var publicProfileURL = "http://localhost:5000/v1/public-profile";
+                    if(uid!=null){
+                        var formData = JSON.stringify({
+                            'uid': uid         
+                        })
+
+                        $.ajax ({
+                            url: publicProfileURL,
+                            type: "POST",
+                            data: formData,
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            crossDomain: true,
+                            success: function(data) {
+                                try{
+                                    console.log(data)
+                                    if(data['success']){
+                                        $('#profileName').text(data['snapshot']['name'])
+                                        $('#editName').val(data['snapshot']['name'])
+                                        
+                                        $('#tagline').text(data['snapshot']['tagline'])
+                                        $('#editTagline').val(data['snapshot']['tagline'])
+                                        
+                                        $('#profileName').removeClass('hidden')
+                                        $('#tagline').removeClass('hidden')
+                                        
+                                        if(data['snapshot']['twitterURL']!=""){
+                                            $('#twitterLink').attr('href', data['snapshot']['twitterURL'])
+                                            $('#editTwitter').val(data['snapshot']['twitterURL'])
+                                            $('#twitterField').removeClass('hidden')
+                                        }
+                                        else{
+                                            $('#twitterField').hide()
+                                        }
+                                        
+                                        if(data['snapshot']['instagramURL']!=""){
+                                            $('#instagramLink').attr('href', data['snapshot']['instagramURL'])
+                                            $('#editInstagram').val(data['snapshot']['instagramURL'])
+                                            $('#instagramField').removeClass('hidden')
+                                        }
+                                        else{
+                                            $('#instagramField').hide()
+                                        }
+                                        
+                                        if(data['snapshot']['facebookURL']!=""){
+                                            $('#facebookLink').attr('href', data['snapshot']['facebookURL'])
+                                            $('#editFacebook').val(data['snapshot']['facebookURL'])
+                                            $('#facebookField').removeClass('hidden')
+                                        }
+                                        else{
+                                            $('#facebookField').hide()
+                                        }
+                                        
+                                    }
+                                    /**/
+                                }
+                                catch(err){}
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                
+                            } 
+                        });
+                    }
+                    
+                    
+                    
+                }
+                
+                function initApp() {    
+                    $('#editName').hide()
+                    $('#editTagline').hide()
+                    $('#editTwitterField').hide()
+                    $('#editInstagramField').hide()
+                    $('#editFacebookField').hide()
+                    $('#saveButton').hide()
+                    $('#toshare').hide()
+                    $('#toshareIcon').hide()
+                    $('#logoutButton').hide()
+                    $('#editButton').hide()
+                    $('#pushButton').hide()
+                    
                     firebase.auth().onAuthStateChanged(function(user) {
                         if (user) {
                             // User is signed in.
                             var email = user.email;
                             var uid = user.uid;
-                            console.log(uid)
-                        } else {
-                            // User is signed out.
-                            window.location.replace("/index.html");
+                            localStorage.setItem('userId', uid);
+                            
+                            var shareableLink = (window.location.origin+'/profile.html?p='+uid).replace('http://', '').replace('https://', '')
+                            $('#toshare').html(shareableLink)
+                            $('#logoutButton').removeClass('hidden')
+                            $('#editButton').removeClass('hidden')
+                            $('#pushButton').removeClass('hidden')
+                            $('#logoutButton').show()
+                            $('#editButton').show()
+                            $('#pushButton').show()
+                            $('#toshare').show()
+                            $('#toshareIcon').show()
+                            
+                            getPublicInfo(uid)
+                            
+                        }
+                        else {
+                            const params = new URLSearchParams(window.location.search);  
+                            uid = params.get("p");
+                            getPublicInfo(uid)
                         }
                     }, function(error) {
                       console.log(error);
                     });
+                }
+                
+                function edit(){
+                    $('#profileName').hide()
+                    $('#tagline').hide()
+                    $('#twitterField').hide()
+                    $('#instagramField').hide()
+                    $('#facebookField').hide()
+                    
+                    $('#editName').show()
+                    $('#editTagline').show()
+                    $('#editTwitterField').show()
+                    $('#editInstagramField').show()
+                    $('#editFacebookField').show()
+                    $('#editButton').hide()
+                    $('#pushButton').hide()
+                    $('#logoutButton').hide()
+                    $('#saveButton').show()
+                }
+                
+                function save(){
+                    name = $('#editName').val()
+                    tagline = $('#editTagline').val()
+                    twitterURL = $('#editTwitter').val()
+                    instagramURL = $('#editInstagram').val()
+                    facebookURL = $('#editFacebook').val()
+                    
+                    $('#profileName').text(name)
+                    $('#tagline').text(tagline)
+                    $('#twitterLink').attr('href', twitterURL)
+                    $('#instagramLink').attr('href', instagramURL)
+                    $('#facebookLink').attr('href', facebookURL)
+                    
+                    $('#profileName').show()
+                    $('#tagline').show()
+                    
+                    if(twitterURL==""){
+                        $('#twitterField').hide()
+                    }
+                    else{
+                        $('#twitterField').removeClass('hidden')
+                        $('#twitterField').show()
+                    }
+
+                    if(instagramURL==""){
+                        $('#instagramField').hide()
+                    }
+                    else{
+                        $('#instagramField').removeClass('hidden')
+                        $('#instagramField').show()
+                    }
+
+                    if(facebookURL==""){
+                        $('#facebookField').hide()
+                    }
+                    else{
+                        $('#facebookField').removeClass('hidden')
+                        $('#facebookField').show()
+                    }
+                    
+                    $('#editName').hide()
+                    $('#editTagline').hide()
+                    $('#editTwitterField').hide()
+                    $('#editInstagramField').hide()
+                    $('#editFacebookField').hide()
+                    $('#saveButton').hide()
+                    $('#logoutButton').show()
+                    $('#editButton').show()
+                    $('#pushButton').show()
+                    
+                    var updateURL = "http://localhost:5000/v1/update-profile";
+                    uid = localStorage.getItem('userId')
+                    if(uid!=null){
+                        var formData = JSON.stringify({
+                            'uid': uid,
+                            'name': name,
+                            'tagline': tagline,
+                            'twitterURL': twitterURL,
+                            'instagramURL': instagramURL,
+                            'facebookURL': facebookURL          
+                        })
+
+                        $.ajax ({
+                            url: updateURL,
+                            type: "POST",
+                            data: formData,
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            crossDomain: true,
+                            success: function(data) {
+                                try{
+                                    
+                                }
+                                catch(err){}
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                
+                            } 
+                        });
+                    }
+                }
+                
+                function logout(){
+                    localStorage.clear();
+                    firebase.auth().signOut();
+                    window.location.replace("/index.html");
+                }
+                
+                function copyShareLink() {
+                    var copyText = 'http://'+$('#toshare').text();
+                    var textarea = document.createElement("textarea");
+                    textarea.textContent = copyText;
+                    textarea.style.position = "fixed"; // Prevent scrolling to bottom of page in MS Edge.
+                    textarea.style.textTransform = "none";
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand("copy"); 
+                    document.body.removeChild(textarea);
                 }
 			</script>
 

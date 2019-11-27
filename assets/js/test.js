@@ -23,25 +23,39 @@ const applicationServerPublicKey = 'BJEmLHcgkIMhmtM1RvtUtpg01ue_ZJUrWxY42_IlR5Kg
         // Initialize Firebase
         var empushyApp = firebase.initializeApp(firebaseConfig, "empushyApp");
         db = empushyApp.database();*/
-        
-        /* Check if service workers and push messaging is supported by the browser */
-        if ('serviceWorker' in navigator && 'PushManager' in window) {
-          console.log('Service Worker and Push is supported');
 
-          navigator.serviceWorker.register('assets/js/sw.js')
-          .then(function(swReg) {
-            console.log('Service Worker is registered', swReg);
+const params = new URLSearchParams(window.location.search);  
+var subId = params.get("p");
+if(subId!=null && subId!=localStorage.getItem('userId')){
+    $('#editButton').hide()
+    /* Check if service workers and push messaging is supported by the browser */
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      console.log('Service Worker and Push is supported');
 
-            swRegistration = swReg;
-            initializeUI();
-              
-          })
-          .catch(function(error) {
-            console.error('Service Worker Error', error);
-          });
-        } else {
-          console.warn('Push messaging is not supported');
-        }
+      navigator.serviceWorker.register('assets/js/sw.js')
+      .then(function(swReg) {
+        console.log('Service Worker is registered', swReg);
+
+        swRegistration = swReg;
+        initializeUI();
+
+      })
+      .catch(function(error) {
+        console.error('Service Worker Error', error);
+      });
+    } else {
+      console.warn('Push messaging is not supported');
+    }
+}
+else{
+    // hide sub
+    // show edits
+    // show nav
+    
+    $('#subButton').hide()
+}
+
+
         
 /*
     });
@@ -100,8 +114,7 @@ function unsubscribeUser() {
       
     if (subscription) {
         // unsub api call using subscription object to search for applicable sub
-        const params = new URLSearchParams(window.location.search);  
-        var subId = params.get("p");
+        
         var subUrl = "http://localhost:5000/v1/unsub";
 
         var formData = JSON.stringify({
@@ -119,12 +132,12 @@ function unsubscribeUser() {
             crossDomain: true,
             success: function(data) {
                 try{
-                    alert('Unsubbed');
+                    
                 }
                 catch(err){}
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                alert('Could not subscribe at this time'); 
+                
             } 
         });
         
@@ -191,12 +204,12 @@ function updateSubscriptionOnServer(subscription) {
         crossDomain: true,
         success: function(data) {
             try{
-                alert('Subbed');
+               
             }
             catch(err){}
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) { 
-            alert('Could not subscribe at this time'); 
+            
         } 
     });
       

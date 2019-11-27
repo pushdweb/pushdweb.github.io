@@ -24,25 +24,23 @@
 						<header>
 							<span class="avatar">
                                 <img src="images/avatar.jpg" alt="" />
-                                <i onclick="copyShareLink()" class="far fa-clipboard" style="cursor: pointer;"></i>
-                                <small id='toshare' style="font-size: x-small; letter-spacing: normal; font-family: inherit; text-transform: none;"></small>
                             </span>
 						</header>
 						<h2>Notification</h2>
 						<form>
 							<div class="fields">
 								<div class="field">
-									<input type="text" name="title" id="title" placeholder="Title" />
+									<input type="text" name="title" id="title" placeholder="Title" style="text-transform: none"/>
 								</div>
 								<div class="field">
-									<textarea name="message" id="message" placeholder="Content" rows="3"></textarea>
+									<textarea name="message" id="message" placeholder="Content" rows="3" style="text-transform: none"></textarea>
 								</div>
 							</div>
 						</form>
-                        <button class="button" onclick="pushNotification()">Push</button>
 						<hr />
 						<footer>
-							<button class="button" onclick="signOut()">Logout</button>
+                            <button class="button" onclick="window.location.replace('/profile.html')">Cancel</button>
+                            <button class="button" onclick="pushNotification()">Push</button>
 						</footer>
 					</section>
 
@@ -102,8 +100,6 @@
                             var uid = user.uid;
                             localStorage.setItem('userId', uid);
                             
-                            var shareableLink = (window.location.origin+'/profile.html?p='+uid).replace('http://', '').replace('https://', '')
-                            $('#toshare').html(shareableLink)
                             
                             // Get user from db
                             var userRef = db.ref('users/' + uid);
@@ -124,24 +120,6 @@
                     }, function(error) {
                       console.log(error);
                     });
-                }
-                
-                function signOut(){
-                    localStorage.clear();
-                    firebase.auth().signOut();
-                    window.location.replace("/index.html");
-                }
-                
-                function copyShareLink() {
-                    var copyText = 'http://'+$('#toshare').text();
-                    var textarea = document.createElement("textarea");
-                    textarea.textContent = copyText;
-                    textarea.style.position = "fixed"; // Prevent scrolling to bottom of page in MS Edge.
-                    textarea.style.textTransform = "none";
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    document.execCommand("copy"); 
-                    document.body.removeChild(textarea);
                 }
                 
                 function pushNotification(){
@@ -165,12 +143,12 @@
                         crossDomain: true,
                         success: function(data) {
                             try{
-                                alert('Notification pushed');
+                                
                             }
                             catch(err){}
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                            alert('Sorry, your notification has not been pushed'); 
+                             
                         } 
                     });
                     
