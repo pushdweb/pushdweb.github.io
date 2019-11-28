@@ -40,13 +40,12 @@
 			<div id="wrapper">
 
 				<!-- Main -->
-                    <img src="images/empushy_white_no_caption.png" style="width: 10%; cursor: pointer;" onclick="window.location.replace('/')"/>
-					<section id="main">
+                    <img src="images/empushy_white_no_caption.png" style="width: 15%; cursor: pointer;" onclick="window.location.replace('/')"/>
+					<section id="main" style="min-height: 78vh;">
+                        <span id="settingsButton" style="float: right; cursor: pointer; position: absolute; right:5%;" onclick="settings()"><i class="fas fa-2x fa-cog" style="opacity: 60%;"></i></span>
 						<header>
 							<span class="avatar">
                                 <img src="images/avatar.jpg" alt=""/>
-                                <i id='toshareIcon' onclick="copyShareLink()" class="far fa-clipboard" style="cursor: pointer;"></i>
-                                <small id='toshare' style="font-size: x-small; letter-spacing: normal; font-family: inherit; text-transform: none;"></small>
                             </span>
 							<h1 id="profileName" class="hidden">Jane Doe</h1>
                             <div class="field">
@@ -57,6 +56,9 @@
                                 <input type="text" id="editTagline" placeholder="Tagline" />
                             </div>
 						</header>
+                        <p id="toShareLine" style="letter-spacing: normal; font-family: inherit; text-transform: none;  margin-bottom: 1%;">Your unique EmPushy link to share:</p>
+                        <i id='toshareIcon' onclick="copyShareLink()" class="far fa-clipboard" style="cursor: pointer;"></i>
+                        <small id='toshare' style="font-size: x-small; letter-spacing: normal; font-family: inherit; text-transform: none;"></small>
 						<!--
 						<hr />
 						<h2>Extra Stuff!</h2>
@@ -95,7 +97,7 @@
 						<hr />
 						-->
 						<footer>
-                            <hr>
+                            <hr style="margin-top: 10%; margin-bottom: 10%;">
 							<ul class="icons">
 								<li id="twitterField" class="hidden"><a id="twitterLink" href="#" target="_blank" class="icon brands fa-twitter">Twitter</a></li>
                                 <li id="editTwitterField">
@@ -141,6 +143,7 @@
             <!-- The core Firebase JS SDK is always required and must be listed first -->
             <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
             <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
         
             <script type="application/javascript" src="assets/js/test.js"></script>
 			<script>
@@ -158,6 +161,7 @@
                 };
                 // Initialize Firebase
                 firebase.initializeApp(firebaseConfig);
+                var db = firebase.database();
                 
 				if ('addEventListener' in window) {
 					window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-preload\b/, ''); });
@@ -185,7 +189,7 @@
                             crossDomain: true,
                             success: function(data) {
                                 try{
-                                    console.log(data)
+                                    
                                     if(data['success']){
                                         $('#profileName').text(data['snapshot']['name'])
                                         $('#editName').val(data['snapshot']['name'])
@@ -246,10 +250,13 @@
                     $('#editFacebookField').hide()
                     $('#saveButton').hide()
                     $('#toshare').hide()
+                    $('#toShareLine').hide()
                     $('#toshareIcon').hide()
                     $('#logoutButton').hide()
                     $('#editButton').hide()
                     $('#pushButton').hide()
+                    $('#settingsButton').hide()
+                    
                     
                     firebase.auth().onAuthStateChanged(function(user) {
                         if (user) {
@@ -258,18 +265,32 @@
                             var uid = user.uid;
                             localStorage.setItem('userId', uid);
                             
-                            var shareableLink = (window.location.origin+'/profile.html?p='+uid).replace('http://', '').replace('https://', '')
-                            $('#toshare').html(shareableLink)
-                            $('#logoutButton').removeClass('hidden')
-                            $('#editButton').removeClass('hidden')
-                            $('#pushButton').removeClass('hidden')
-                            $('#logoutButton').show()
-                            $('#editButton').show()
-                            $('#pushButton').show()
-                            $('#toshare').show()
-                            $('#toshareIcon').show()
-                            
-                            getPublicInfo(uid)
+                            // Get user from db
+                            var userRef = db.ref('users/' + uid);
+                            userRef.once('value').then(function(snapshot) {
+                                if(snapshot.val()==null){
+                                    // create user in db
+                                    db.ref('users/' + uid).set({
+                                        joined: (new Date().getTime()),
+                                        name: 'Jane Doe',
+                                        tagline: 'My tagline'
+                                    });
+                                }  
+                                var shareableLink = (window.location.origin+'/profile.html?p='+uid).replace('http://', '').replace('https://', '')
+                                $('#toshare').html(shareableLink)
+                                $('#logoutButton').removeClass('hidden')
+                                $('#editButton').removeClass('hidden')
+                                $('#pushButton').removeClass('hidden')
+                                $('#logoutButton').show()
+                                $('#editButton').show()
+                                $('#pushButton').show()
+                                $('#toshare').show()
+                                $('#toShareLine').show()
+                                $('#toshareIcon').show()
+                                $('#settingsButton').show()
+
+                                getPublicInfo(uid)
+                            });
                             
                         }
                         else {
@@ -398,6 +419,10 @@
                     textarea.select();
                     document.execCommand("copy"); 
                     document.body.removeChild(textarea);
+                }
+                
+                function settings() {
+                    
                 }
 			</script>
 

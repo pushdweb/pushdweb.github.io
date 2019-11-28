@@ -62,7 +62,6 @@
         
             <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
             <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
-            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
         
 			<script>
 				// Your web app's Firebase configuration
@@ -78,7 +77,6 @@
                 };
                 // Initialize Firebase
                 firebase.initializeApp(firebaseConfig);
-                var db = firebase.database();
                 
 				if ('addEventListener' in window) {
 					window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-preload\b/, ''); });
@@ -99,19 +97,6 @@
                             var email = user.email;
                             var uid = user.uid;
                             localStorage.setItem('userId', uid);
-                            
-                            
-                            // Get user from db
-                            var userRef = db.ref('users/' + uid);
-                            userRef.once('value').then(function(snapshot) {
-                                if(snapshot.val()==null){
-                                    // create user in db
-                                    db.ref('users/' + uid).set({
-                                        joined: (new Date().getTime())
-                                    });
-                                }
-                            });
-                            
                             
                         } else {
                             // User is signed out.

@@ -3,6 +3,7 @@
 var db = null;
 var swRegistration = null;
 var isSubscribed = false;
+//const applicationServerPublicKey = 'BJEmLHcgkIMhmtM1RvtUtpg01ue_ZJUrWxY42_IlR5KgNMjKHH8DT9bM4xP8w9CJOJpyf2_dVpORdS99vPoFnSQ';
 const applicationServerPublicKey = 'BJEmLHcgkIMhmtM1RvtUtpg01ue_ZJUrWxY42_IlR5KgNMjKHH8DT9bM4xP8w9CJOJpyf2_dVpORdS99vPoFnSQ';
 
 /*$.getScript('https://www.gstatic.com/firebasejs/7.4.0/firebase-app.js', function()
