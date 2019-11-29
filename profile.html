@@ -42,22 +42,22 @@
 				<!-- Main -->
                     <img src="images/empushy_white_no_caption.png" style="width: 15%; cursor: pointer;" onclick="window.location.replace('/')"/>
 					<section id="main" style="min-height: 78vh;">
-                        <span id="settingsButton" style="float: right; cursor: pointer; position: absolute; right:5%;" onclick="settings()"><i class="fas fa-2x fa-cog" style="opacity: 60%;"></i></span>
+                        <span id="settingsButton" style="float: right; cursor: pointer; position: absolute; right:5%; display: none;" onclick="settings()"><i class="fas fa-2x fa-cog" style="opacity: 60%;"></i></span>
 						<header>
 							<span class="avatar">
                                 <img src="images/avatar.jpg" alt=""/>
                             </span>
-							<h1 id="profileName" class="hidden">Jane Doe</h1>
+							<h1 id="profileName" style="display: none;"></h1>
                             <div class="field">
-                                <input type="text" id="editName" placeholder="Jane Doe"/>
+                                <input type="text" style="display: none;" id="editName" placeholder="Name"/>
                             </div>
-							<p id="tagline" class="hidden">Tagline</p>
+							<p id="tagline" style="display: none;"></p>
                             <div class="field">
-                                <input type="text" id="editTagline" placeholder="Tagline" />
+                                <input type="text" style="display: none;" id="editTagline" placeholder="Tagline" />
                             </div>
 						</header>
-                        <p id="toShareLine" style="letter-spacing: normal; font-family: inherit; text-transform: none;  margin-bottom: 1%;">Your unique EmPushy link to share:</p>
-                        <i id='toshareIcon' onclick="copyShareLink()" class="far fa-clipboard" style="cursor: pointer;"></i>
+                        <p id="toShareLine" style="letter-spacing: normal; font-family: inherit; text-transform: none;  margin-bottom: 1%; display: none;">Your unique EmPushy link to share:</p>
+                        <i id='toshareIcon' onclick="copyShareLink()" class="far fa-clipboard" style="cursor: pointer; display: none;"></i>
                         <small id='toshare' style="font-size: x-small; letter-spacing: normal; font-family: inherit; text-transform: none;"></small>
 						<!--
 						<hr />
@@ -99,30 +99,30 @@
 						<footer>
                             <hr style="margin-top: 10%; margin-bottom: 10%;">
 							<ul class="icons">
-								<li id="twitterField" class="hidden"><a id="twitterLink" href="#" target="_blank" class="icon brands fa-twitter">Twitter</a></li>
-                                <li id="editTwitterField">
+								<li id="twitterField" style="display: none;"><a id="twitterLink" href="#" target="_blank" class="icon brands fa-twitter">Twitter</a></li>
+                                <li id="editTwitterField" style="display: none;">
                                     <div class="field">
                                         <input type="text" id="editTwitter" placeholder="Twitter link" />
                                     </div>
                                 </li>
-								<li id="instagramField" class="hidden"><a id="instagramLink" href="#" target="_blank" class="icon brands fa-instagram">Instagram</a></li>
-								<li id="editInstagramField">
+								<li id="instagramField" style="display: none;"><a id="instagramLink" href="#" target="_blank" class="icon brands fa-instagram">Instagram</a></li>
+								<li id="editInstagramField" style="display: none;">
                                     <div class="field" >
                                         <input type="text" id="editInstagram" placeholder="Instagram link" />
                                     </div>
                                 </li>
-								<li id="facebookField" class="hidden"><a id="facebookLink" href="#" target="_blank" class="icon brands fa-facebook-f">Facebook</a></li>
-								<li  id="editFacebookField">
+								<li id="facebookField" style="display: none;"><a id="facebookLink" href="#" target="_blank" class="icon brands fa-facebook-f">Facebook</a></li>
+								<li  id="editFacebookField" style="display: none;">
                                     <div class="field">
                                         <input type="text" id="editFacebook" placeholder="Facebook link" />
                                     </div>
                                 </li>
 							</ul>
-                            <button id='subButton' class="button" onclick="subButtonClick()" disabled>Subscribe</button>
-							<button id='logoutButton' class="button" onclick="logout()">Logout</button>
-                            <button id='editButton' class="button" onclick="edit()">Edit</button>
-                            <button id='saveButton' class="button" onclick="save()">Save</button>
-                            <button id='pushButton' class="button" onclick="window.location.replace('/push.html')">Push</button>
+                            <button id='subButton' style="display: none;" class="button" onclick="subButtonClick()" disabled>Subscribe</button>
+							<button id='logoutButton' style="display: none;" class="button" onclick="logout()">Logout</button>
+                            <button id='editButton' style="display: none;" class="button" onclick="edit()">Edit</button>
+                            <button id='saveButton' style="display: none;" class="button" onclick="save()">Save</button>
+                            <button id='pushButton' style="display: none;" class="button" onclick="window.location.replace('/push.html')">Push</button>
 						</footer>
 					</section>
 
@@ -130,6 +130,7 @@
 					<footer id="footer">
 						<ul class="copyright">
 							<li>&copy; EmPushy</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                            <li id="signInLink"><a href="/index.html">Sign In</a></li>
 						</ul>
 					</footer>
 
@@ -191,19 +192,23 @@
                                 try{
                                     
                                     if(data['success']){
+                                        
+                                        
+                                        initSubscribe(data['snapshot']['applicationServerKey'])
+                                        
                                         $('#profileName').text(data['snapshot']['name'])
                                         $('#editName').val(data['snapshot']['name'])
                                         
                                         $('#tagline').text(data['snapshot']['tagline'])
                                         $('#editTagline').val(data['snapshot']['tagline'])
                                         
-                                        $('#profileName').removeClass('hidden')
-                                        $('#tagline').removeClass('hidden')
+                                        $('#profileName').show()
+                                        $('#tagline').show()
                                         
                                         if(data['snapshot']['twitterURL']!=""){
                                             $('#twitterLink').attr('href', data['snapshot']['twitterURL'])
                                             $('#editTwitter').val(data['snapshot']['twitterURL'])
-                                            $('#twitterField').removeClass('hidden')
+                                            $('#twitterField').show()
                                         }
                                         else{
                                             $('#twitterField').hide()
@@ -212,7 +217,7 @@
                                         if(data['snapshot']['instagramURL']!=""){
                                             $('#instagramLink').attr('href', data['snapshot']['instagramURL'])
                                             $('#editInstagram').val(data['snapshot']['instagramURL'])
-                                            $('#instagramField').removeClass('hidden')
+                                            $('#instagramField').show()
                                         }
                                         else{
                                             $('#instagramField').hide()
@@ -221,7 +226,7 @@
                                         if(data['snapshot']['facebookURL']!=""){
                                             $('#facebookLink').attr('href', data['snapshot']['facebookURL'])
                                             $('#editFacebook').val(data['snapshot']['facebookURL'])
-                                            $('#facebookField').removeClass('hidden')
+                                            $('#facebookField').show()
                                         }
                                         else{
                                             $('#facebookField').hide()
@@ -236,67 +241,42 @@
                                 
                             } 
                         });
-                    }
-                    
-                    
-                    
+                    }  
                 }
                 
                 function initApp() {    
-                    $('#editName').hide()
-                    $('#editTagline').hide()
-                    $('#editTwitterField').hide()
-                    $('#editInstagramField').hide()
-                    $('#editFacebookField').hide()
-                    $('#saveButton').hide()
-                    $('#toshare').hide()
-                    $('#toShareLine').hide()
-                    $('#toshareIcon').hide()
-                    $('#logoutButton').hide()
-                    $('#editButton').hide()
-                    $('#pushButton').hide()
-                    $('#settingsButton').hide()
-                    
-                    
                     firebase.auth().onAuthStateChanged(function(user) {
+                        
+                        
                         if (user) {
                             // User is signed in.
                             var email = user.email;
                             var uid = user.uid;
                             localStorage.setItem('userId', uid);
                             
-                            // Get user from db
-                            var userRef = db.ref('users/' + uid);
-                            userRef.once('value').then(function(snapshot) {
-                                if(snapshot.val()==null){
-                                    // create user in db
-                                    db.ref('users/' + uid).set({
-                                        joined: (new Date().getTime()),
-                                        name: 'Jane Doe',
-                                        tagline: 'My tagline'
-                                    });
-                                }  
-                                var shareableLink = (window.location.origin+'/profile.html?p='+uid).replace('http://', '').replace('https://', '')
-                                $('#toshare').html(shareableLink)
-                                $('#logoutButton').removeClass('hidden')
-                                $('#editButton').removeClass('hidden')
-                                $('#pushButton').removeClass('hidden')
-                                $('#logoutButton').show()
-                                $('#editButton').show()
-                                $('#pushButton').show()
-                                $('#toshare').show()
-                                $('#toShareLine').show()
-                                $('#toshareIcon').show()
-                                $('#settingsButton').show()
+                            var shareableLink = (window.location.origin+'/profile.html?p='+uid).replace('http://', '').replace('https://', '')
+                            $('#toshare').html(shareableLink)
+                            $('#logoutButton').removeClass('hidden')
+                            $('#editButton').removeClass('hidden')
+                            $('#pushButton').removeClass('hidden')
+                            $('#logoutButton').show()
+                            $('#editButton').show()
+                            $('#pushButton').show()
+                            $('#toshare').show()
+                            $('#toShareLine').show()
+                            $('#toshareIcon').show()
+                            $('#settingsButton').show()
+                            $('#signInLink').hide()
 
-                                getPublicInfo(uid)
-                            });
+                            getPublicInfo(uid)
                             
                         }
                         else {
                             const params = new URLSearchParams(window.location.search);  
                             uid = params.get("p");
                             getPublicInfo(uid)
+                            $('#subButton').show()
+                            $('#signInLink').show()
                         }
                     }, function(error) {
                       console.log(error);

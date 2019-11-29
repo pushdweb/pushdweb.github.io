@@ -4,7 +4,8 @@ var db = null;
 var swRegistration = null;
 var isSubscribed = false;
 //const applicationServerPublicKey = 'BJEmLHcgkIMhmtM1RvtUtpg01ue_ZJUrWxY42_IlR5KgNMjKHH8DT9bM4xP8w9CJOJpyf2_dVpORdS99vPoFnSQ';
-const applicationServerPublicKey = 'BJEmLHcgkIMhmtM1RvtUtpg01ue_ZJUrWxY42_IlR5KgNMjKHH8DT9bM4xP8w9CJOJpyf2_dVpORdS99vPoFnSQ';
+//const applicationServerPublicKey = 'BJEmLHcgkIMhmtM1RvtUtpg01ue_ZJUrWxY42_IlR5KgNMjKHH8DT9bM4xP8w9CJOJpyf2_dVpORdS99vPoFnSQ';
+var applicationServerPublicKey = null;
 
 /*$.getScript('https://www.gstatic.com/firebasejs/7.4.0/firebase-app.js', function()
 {
@@ -24,40 +25,35 @@ const applicationServerPublicKey = 'BJEmLHcgkIMhmtM1RvtUtpg01ue_ZJUrWxY42_IlR5Kg
         // Initialize Firebase
         var empushyApp = firebase.initializeApp(firebaseConfig, "empushyApp");
         db = empushyApp.database();*/
+function initSubscribe(serverKey){
+    
+    applicationServerPublicKey = serverKey;
+    
+    const params = new URLSearchParams(window.location.search);  
+    var subId = params.get("p");
+    if(subId!=null && subId!=localStorage.getItem('userId')){
+        console.log('here')
+        /* Check if service workers and push messaging is supported by the browser */
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+          console.log('Service Worker and Push is supported');
 
-const params = new URLSearchParams(window.location.search);  
-var subId = params.get("p");
-if(subId!=null && subId!=localStorage.getItem('userId')){
-    $('#editButton').hide()
-    /* Check if service workers and push messaging is supported by the browser */
-    if ('serviceWorker' in navigator && 'PushManager' in window) {
-      console.log('Service Worker and Push is supported');
+          navigator.serviceWorker.register('/sw.js', {scope: '/profile.html?p='+subId})
+          .then(function(swReg) {
+            console.log('Service Worker is registered', swReg);
 
-      navigator.serviceWorker.register('assets/js/sw.js')
-      .then(function(swReg) {
-        console.log('Service Worker is registered', swReg);
+            swRegistration = swReg;
+            initializeUI();
 
-        swRegistration = swReg;
-        initializeUI();
-
-      })
-      .catch(function(error) {
-        console.error('Service Worker Error', error);
-      });
-    } else {
-      console.warn('Push messaging is not supported');
+          })
+          .catch(function(error) {
+            console.error('Service Worker Error', error);
+          });
+        } else {
+          console.warn('Push messaging is not supported');
+        }
     }
 }
-else{
-    // hide sub
-    // show edits
-    // show nav
-    
-    $('#subButton').hide()
-}
-
-
-        
+  
 /*
     });
 });
@@ -98,22 +94,25 @@ function updateBtn() {
 }
 
 function subButtonClick(){
-    console.log('subscription button clicked')
-    $('#subButton').prop('disabled', true);
-    
-    if (isSubscribed) {
-      unsubscribeUser();
-    } else {
-      subscribeUser();
+    if(applicationServerPublicKey!=null){
+        $('#subButton').prop('disabled', true);
+
+        if (isSubscribed) {
+          unsubscribeUser();
+        } else {
+          subscribeUser();
+        }
     }
 }
 
 function unsubscribeUser() {
   swRegistration.pushManager.getSubscription()
   .then(function(subscription) {
-    
       
-    if (subscription) {
+    const params = new URLSearchParams(window.location.search);  
+    var subId = params.get("p");
+      
+    if (subscription && subId!=null) {
         // unsub api call using subscription object to search for applicable sub
         
         var subUrl = "http://localhost:5000/v1/unsub";
