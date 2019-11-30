@@ -45,8 +45,9 @@
                         <span id="settingsButton" style="float: right; cursor: pointer; position: absolute; right:5%; display: none;" onclick="settings()"><i class="fas fa-2x fa-cog" style="opacity: 60%;"></i></span>
 						<header>
 							<span class="avatar">
-                                <img src="images/avatar.jpg" alt=""/>
+                                <img id="profileImage" src="images/avatar.jpg" alt="" style="height:122px; width:122px;"/>
                             </span>
+                            <input id='imageChooser' name="file" type="file" style="display: none; width: 100%; padding-left:10%; padding-right:10%; margin-bottom: 5%;"/>
 							<h1 id="profileName" style="display: none;"></h1>
                             <div class="field">
                                 <input type="text" style="display: none;" id="editName" placeholder="Name"/>
@@ -137,14 +138,15 @@
 			</div>
 
 		<!-- Scripts -->
-            <script
-              src="https://code.jquery.com/jquery-3.4.1.min.js"
-              integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-              crossorigin="anonymous"></script>
-            <!-- The core Firebase JS SDK is always required and must be listed first -->
-            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
-            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
-            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
+        <script
+          src="https://code.jquery.com/jquery-3.4.1.min.js"
+          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+          crossorigin="anonymous"></script>
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
+        <script src="./path/to/dropzone.js"></script>
         
             <script type="application/javascript" src="assets/js/test.js"></script>
 			<script>
@@ -198,6 +200,7 @@
                                         
                                         $('#profileName').text(data['snapshot']['name'])
                                         $('#editName').val(data['snapshot']['name'])
+                                        $('#profileImage').attr('src', data['snapshot']['profileImage'])
                                         
                                         $('#tagline').text(data['snapshot']['tagline'])
                                         $('#editTagline').val(data['snapshot']['tagline'])
@@ -292,6 +295,7 @@
                     
                     $('#editName').show()
                     $('#editTagline').show()
+                    $('#imageChooser').show()
                     $('#editTwitterField').show()
                     $('#editInstagramField').show()
                     $('#editFacebookField').show()
@@ -299,14 +303,26 @@
                     $('#pushButton').hide()
                     $('#logoutButton').hide()
                     $('#saveButton').show()
+                    
+                    var fileReader = new FileReader();
+                    fileReader.addEventListener("load", function(e) {
+                        $('#profileImage').attr('src', e.target.result)        
+                    }); 
+
+                    $('#imageChooser').change(function(e) { 
+                        console.log('changed')
+                        fileReader.readAsDataURL( this.files[0] );
+                    });
                 }
                 
                 function save(){
+                    var updateURL = "http://localhost:5000/v1/update-profile";
                     name = $('#editName').val()
                     tagline = $('#editTagline').val()
                     twitterURL = $('#editTwitter').val()
                     instagramURL = $('#editInstagram').val()
                     facebookURL = $('#editFacebook').val()
+                    profileImage = $('#profileImage').attr('src')
                     
                     $('#profileName').text(name)
                     $('#tagline').text(tagline)
@@ -343,6 +359,7 @@
                     
                     $('#editName').hide()
                     $('#editTagline').hide()
+                    $('#imageChooser').hide()
                     $('#editTwitterField').hide()
                     $('#editInstagramField').hide()
                     $('#editFacebookField').hide()
@@ -351,7 +368,6 @@
                     $('#editButton').show()
                     $('#pushButton').show()
                     
-                    var updateURL = "http://localhost:5000/v1/update-profile";
                     uid = localStorage.getItem('userId')
                     if(uid!=null){
                         var formData = JSON.stringify({
@@ -360,7 +376,8 @@
                             'tagline': tagline,
                             'twitterURL': twitterURL,
                             'instagramURL': instagramURL,
-                            'facebookURL': facebookURL          
+                            'facebookURL': facebookURL,
+                            'profileImage': profileImage
                         })
 
                         $.ajax ({
@@ -372,15 +389,17 @@
                             crossDomain: true,
                             success: function(data) {
                                 try{
-                                    
+
                                 }
                                 catch(err){}
                             },
                             error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                                
+
                             } 
                         });
-                    }
+                    } 
+                    
+                    
                 }
                 
                 function logout(){
@@ -404,6 +423,8 @@
                 function settings() {
                     
                 }
+                
+                
 			</script>
 
 	</body>
