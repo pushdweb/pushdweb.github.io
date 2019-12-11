@@ -153,12 +153,12 @@
 /* Type */
 
 	body, input, select, textarea {
-		color: #414f57;
+		color: black;
 		font-family: "Source Sans Pro", Helvetica, sans-serif;
 		font-size: 14pt;
 		font-weight: 300;
 		line-height: 2;
-		letter-spacing: 0.2em;
+		letter-spacing: 0.1em;
 		text-transform: uppercase;
 	}
 
@@ -224,8 +224,8 @@
 
 	h1 {
 		font-size: 1.85em;
-		letter-spacing: 0.22em;
-		margin: 0 0 0.525em 0;
+		letter-spacing: 0.15em;
+		margin: 0 0 0.2em 0;
 	}
 
 	h2 {
@@ -734,6 +734,27 @@
 
 /* Icons */
 
+    .settingsButtons {
+        margin-left:2%;
+        display: none;
+        flex-direction: column;
+    }
+
+    .settings {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        padding: 15%;
+        border-radius: 100%;
+        border: solid 1px white;
+        margin-bottom: 5px;
+    }
+
+    .settings:hover {
+        border-color: #ff7496;
+        background: #ff7496 !important;
+    }
+
 	ul.icons {
 		cursor: default;
 		list-style: none;
@@ -934,7 +955,7 @@
 				display: block;
 				margin: 0 auto;
 				border-radius: 100%;
-				box-shadow: 0 0 0 1.5em #ffffff;
+				box-shadow: 0 0 0 0.5em #ffffff;
 			}
 
 			#main .avatar:before {

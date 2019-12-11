@@ -6,14 +6,31 @@
 -->
 <html>
 	<head>
-		<title>EmPushy</title>
+		<title>Pushd</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/landing.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
         
-        <script src="https://www.gstatic.com/firebasejs/ui/4.3.0/firebase-ui-auth.js"></script>
-        <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.3.0/firebase-ui-auth.css" />
+        <style>
+            p {
+                font-family: "Source Sans Pro", Helvetica, sans-serif;
+                font-weight: 300;
+                letter-spacing: 0.2em;
+                color: white;
+                font-size: large;
+            }
+            footer, button {
+                color: white!important;
+            }
+            button:hover {
+                border-color: white!important;
+                color: white!important;
+            }
+            a:hover {
+                color: white!important;
+            }
+        </style>
 	</head>
 	<body class="is-preload">
 
@@ -21,155 +38,47 @@
 			<div id="wrapper">
 
 				<!-- Main -->
-					<section id="main" style="background-color: transparent">
+					<section id="main" style="background: transparent;  min-width: 40vh;">
 						<header>
-							<span><img src="images/empushy_white_no_caption.png" alt="" style="width: 100%;"/></span>
+							<span><img src="images/pushd_white_no_caption_2.0.png" alt="" style="width: 100%;"/></span>
 						</header>
-                        <div id="firebaseui-auth-container"></div>
-						<!--<footer style="color: white; padding: 2%;">
-							<small>No account yet? <br>Enter your email above to get started!</small>
-						</footer>-->
+                        <hr>
+                        <div style="display: flex; text-align: left;">
+                            <img src="images/landing_icons_media_white.png" alt="" style="width: 75px; height: 75px; margin-right: 5%;"/>
+                            <p style="margin: auto;">Push notifications to your friends and followers</p>
+                        </div>
+                        <br>
+                        <div style="display: flex; text-align: right;">
+                            <p style="margin: auto;">Subscribe to notifications from your favorite people</p>
+                            <img src="images/landing_icons_emoticons_white.png" alt="" style="width: 75px; height: 75px; margin-left: 5%;"/>
+                        </div>
+                        <hr>
+						<footer>
+                            <!--<button onclick="window.location.replace('/about.html')">Learn more</button>-->
+							<button onclick="window.location.replace('/login.html')">Get Started</button>
+						</footer>
 					</section>
 
 				<!-- Footer -->
 					<footer id="footer">
 						<ul class="copyright">
-							<li>&copy; EmPushy</li><li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
+							<li>&copy; Pushd</li><li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
 						</ul>
 					</footer>
 
 			</div>
 
 		<!-- Scripts -->
-            <script
-              src="https://code.jquery.com/jquery-3.4.1.min.js"
-              integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-              crossorigin="anonymous"></script>
-            <!-- The core Firebase JS SDK is always required and must be listed first -->
-            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
-            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
-        
-			<script>
-                // Your web app's Firebase configuration
-                var firebaseConfig = {
-                    apiKey: "AIzaSyBJpTtm__4p2TRQnBs71PG5u0odryHPxqs",
-                    authDomain: "autoempushy.firebaseapp.com",
-                    databaseURL: "https://autoempushy.firebaseio.com",
-                    projectId: "autoempushy",
-                    storageBucket: "autoempushy.appspot.com",
-                    messagingSenderId: "787581605206",
-                    appId: "1:787581605206:web:5cc765820a98b8008d32f7",
-                    measurementId: "G-NWVD0JG36T"
-                };
-                // Initialize Firebase
-                firebase.initializeApp(firebaseConfig);
-                
-				if ('addEventListener' in window) {
-					window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-preload\b/, ''); });
-					document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
-				}
-
-                window.addEventListener('load', function() {
-                    initApp();
-                });
-                
-                function setupLogin(){
-                    var uiConfig = {
-                        callbacks: {
-                            signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-                                var isNewUser = authResult.additionalUserInfo.isNewUser;
-                                var uid = authResult.user.uid;
-                                if(isNewUser){                                    
-                                    var newUserURL = "http://localhost:5000/v1/new-user";
-                                    var formData = JSON.stringify({
-                                        'userId': uid,         
-                                    })
-
-                                    $.ajax ({
-                                        url: newUserURL,
-                                        type: "POST",
-                                        data: formData,
-                                        dataType: "json",
-                                        contentType: "application/json; charset=utf-8",
-                                        crossDomain: true,
-                                        success: function(data) {
-                                            console.log(data)
-                                            if(data['success']){
-                                                localStorage.setItem('userId', uid)
-                                                window.location.replace('/profile.html')
-                                            }
-                                            else
-                                                alert('An error occurred. Please try again later.')
-                                        },
-                                        error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                                            alert('An error occurred. Please try again later.')
-                                        } 
-                                    });
-                                    
-                                }
-                                else {
-                                    localStorage.setItem('userId', uid)
-                                    window.location.replace('/profile.html')
-                                }
-                                return false;
-                            },
-                            signInFailure: function(error) {
-                                // Some unrecoverable error occurred during sign-in.
-                                // Return a promise when error handling is completed and FirebaseUI
-                                // will reset, clearing any UI. This commonly occurs for error code
-                                // 'firebaseui/anonymous-upgrade-merge-conflict' when merge conflict
-                                // occurs. Check below for more details on this.
-                                return handleUIError(error);
-                            },
-                            uiShown: function() {
-                                // The widget is rendered.
-                                // Hide the loader.
-                                $('.firebaseui-title').html('Enter your email to<br>Sign in or Get started')
-                                $('.firebaseui-title').css('text-align', 'center')
-                            }
-                        },
-                        signInSuccessUrl: '/push.html',
-                        signInOptions: [
-                            // Leave the lines as is for the providers you want to offer your users.
-                            {
-                                provider: "password",  /*EmailAuthProvider*/
-                                requireDisplayName: false
-                            }
-                        ],
-                        credentialHelper: firebaseui.auth.CredentialHelper.NONE,
-                        // tosUrl and privacyPolicyUrl accept either url string or a callback
-                        // function.
-                        // Terms of service url/callback.
-                        tosUrl: '/',
-                        // Privacy policy url/callback.
-                        privacyPolicyUrl: function() {
-                          window.location.assign('/');
-                        }
-                    };
-
-                    // Initialize the FirebaseUI Widget using Firebase.
-                    var ui = new firebaseui.auth.AuthUI(firebase.auth());
-                    // The start method will wait until the DOM is loaded.
-                    ui.start('#firebaseui-auth-container', uiConfig)
-                    
-                    
-                }
-                function initApp() {
-                    firebase.auth().onAuthStateChanged(function(user) {
-                        if (user) {   
-                            if(localStorage.getItem('userId')!=null)
-                                window.location.replace("/profile.html");
-                        } else {
-                            // User is signed out.
-                            setupLogin();
-                        }
-                    }, function(error) {
-                      console.log(error);
-                    });
-                }
-                
-                
-			</script>
+        <script
+          src="https://code.jquery.com/jquery-3.4.1.min.js"
+          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+          crossorigin="anonymous"></script>
+        <script>
+            if ('addEventListener' in window) {
+                window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-preload\b/, ''); });
+                document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
+            }
+        </script>
 
 	</body>
 </html>

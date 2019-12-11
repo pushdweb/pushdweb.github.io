@@ -77,20 +77,93 @@ function initializeUI() {
 }
 
 function updateBtn() {
-
+    
   if (Notification.permission === 'denied') {
     $('#subButton').prop('disabled', true);
     updateSubscriptionOnServer(null);
+    
+    $.confirm({
+        title: "<h2 style='text-transform: capitalize; letter-spacing: normal; line-spacing: normal;'>Notification Permissions</h2>",
+        content: "<h5 style='text-transform: none; letter-spacing: normal; line-spacing: normal;'>To receive <strong style='text-transform: capitalize;'>Pushd</strong> notifications from the content creators on this platform, you must grant push-notification permission to <strong style='text-transform: capitalize;'>Pushd</strong>.</h5>",
+        type: 'purple',
+        boxWidth: '30%',
+        useBootstrap: false,
+        typeAnimated: true,
+        buttons: {
+            grant: {
+                text: 'Grant',
+                btnClass: 'btn-white',
+                action: function(){
+                    askPermission()
+                }
+            },
+            deny: {
+                text: 'Deny',
+                btnClass: 'btn-white',
+                action: function(){
+                    return;
+                }
+            }
+        },
+        draggable: false,
+    });
+      
     return;
   }
-    
-  if (isSubscribed) {
-      $('#subButton').html('Unsubscribe');
-  } else {
-      $('#subButton').html('Subscribe');
-  }
+  else if(Notification.permission === 'granted'){      
+      if (isSubscribed) {
+          $('#subButton').html('Unsubscribe');
+      } else {
+          $('#subButton').html('Subscribe');
+      }
 
-  $('#subButton').prop('disabled', false);
+      $('#subButton').prop('disabled', false);
+  }
+  else {
+      console.log(Notification.permission)
+      $.confirm({
+            title: "<h2 style='text-transform: capitalize; letter-spacing: normal; line-spacing: normal;'>Notification Permissions</h2>",
+            content: "<h5 style='text-transform: none; letter-spacing: normal; line-spacing: normal;'>To receive <strong style='text-transform: capitalize;'>Pushd</strong> notifications from the content creators on this platform, you must grant push-notification permission to <strong style='text-transform: capitalize;'>Pushd</strong>.</h5>",
+            type: 'purple',
+            boxWidth: '30%',
+            useBootstrap: false,
+            typeAnimated: true,
+            buttons: {
+                grant: {
+                    text: 'Grant',
+                    btnClass: 'btn-white',
+                    action: function(){
+                        askPermission()
+                    }
+                },
+                deny: {
+                    text: 'Deny',
+                    btnClass: 'btn-white',
+                    action: function(){
+                        return;
+                    }
+                }
+            },
+            draggable: false,
+      });
+  }
+}
+
+function askPermission() {
+  return new Promise(function(resolve, reject) {
+        const permissionResult = Notification.requestPermission(function(result) {
+            console.log(result)
+            if(result==='granted'){
+                if (isSubscribed) {
+                  $('#subButton').html('Unsubscribe');
+                } else {
+                  $('#subButton').html('Subscribe');
+                }
+
+                $('#subButton').prop('disabled', false);
+            }
+        });
+  })
 }
 
 function subButtonClick(){
@@ -251,7 +324,7 @@ function displayNotification() {
         navigator.serviceWorker.ready.then(function(registration) {
             registration.showNotification('Vibration Sample', {
               body: 'Buzz! Buzz!',
-              icon: '../images/touch/chrome-touch-icon-192x192.png',
+              badge: './images/favicon.png',
               vibrate: [200, 100, 200, 100, 200, 100, 200],
               tag: 'vibration-sample'
             });

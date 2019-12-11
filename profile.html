@@ -10,7 +10,9 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/ant-toast.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
         
         <style>
             .edit-icon {
@@ -32,6 +34,34 @@
             .hidden {
                 display: none!important;
             }
+            .chooser {
+                -moz-appearance: none;
+                -webkit-appearance: none;
+                -ms-appearance: none;
+                appearance: none;
+                -moz-transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+                -webkit-transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+                -ms-transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+                transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+                display: inline-block;
+                height: 2em;
+                line-height: 2em;
+                padding: 0 1.5em;
+                background-color: transparent;
+                border-radius: 4px;
+                border: solid 1px #c8cccf;
+                color: #414f57 !important;
+                cursor: pointer;
+                text-align: center;
+                text-decoration: none;
+                white-space: nowrap;
+                text-transform: capitalize;
+                letter-spacing: normal;                
+            }
+            .chooser:hover {
+                border-color: #ff7496;
+                color: #ff7496 !important;
+            }
         </style>
 	</head>
 	<body class="is-preload">
@@ -40,97 +70,106 @@
 			<div id="wrapper">
 
 				<!-- Main -->
-                    <img src="images/empushy_white_no_caption.png" style="width: 15%; cursor: pointer;" onclick="window.location.replace('/')"/>
-					<section id="main" style="min-height: 78vh;">
-                        <span id="settingsButton" style="float: right; cursor: pointer; position: absolute; right:5%; display: none;" onclick="settings()"><i class="fas fa-2x fa-cog" style="opacity: 60%;"></i></span>
-						<header>
-							<span class="avatar">
-                                <img id="profileImage" src="images/avatar.jpg" alt="" style="height:122px; width:122px;"/>
-                            </span>
-                            <input id='imageChooser' name="file" type="file" style="display: none; width: 100%; padding-left:10%; padding-right:10%; margin-bottom: 5%;"/>
-							<h1 id="profileName" style="display: none;"></h1>
-                            <div class="field">
-                                <input type="text" style="display: none;" id="editName" placeholder="Name"/>
-                            </div>
-							<p id="tagline" style="display: none;"></p>
-                            <div class="field">
-                                <input type="text" style="display: none;" id="editTagline" placeholder="Tagline" />
-                            </div>
-						</header>
-                        <p id="toShareLine" style="letter-spacing: normal; font-family: inherit; text-transform: none;  margin-bottom: 1%; display: none;">Your unique EmPushy link to share:</p>
-                        <i id='toshareIcon' onclick="copyShareLink()" class="far fa-clipboard" style="cursor: pointer; display: none;"></i>
-                        <small id='toshare' style="font-size: x-small; letter-spacing: normal; font-family: inherit; text-transform: none;"></small>
-						<!--
-						<hr />
-						<h2>Extra Stuff!</h2>
-						<form method="post" action="#">
-							<div class="fields">
-								<div class="field">
-									<input type="text" name="name" id="name" placeholder="Name" />
-								</div>
-								<div class="field">
-									<input type="email" name="email" id="email" placeholder="Email" />
-								</div>
-								<div class="field">
-									<select name="department" id="department">
-										<option value="">Department</option>
-										<option value="sales">Sales</option>
-										<option value="tech">Tech Support</option>
-										<option value="null">/dev/null</option>
-									</select>
-								</div>
-								<div class="field">
-									<textarea name="message" id="message" placeholder="Message" rows="4"></textarea>
-								</div>
-								<div class="field">
-									<input type="checkbox" id="human" name="human" /><label for="human">I'm a human</label>
-								</div>
-								<div class="field">
-									<label>But are you a robot?</label>
-									<input type="radio" id="robot_yes" name="robot" /><label for="robot_yes">Yes</label>
-									<input type="radio" id="robot_no" name="robot" /><label for="robot_no">No</label>
-								</div>
-							</div>
-							<ul class="actions special">
-								<li><a href="#" class="button">Get Started</a></li>
-							</ul>
-						</form>
-						<hr />
-						-->
-						<footer>
-                            <hr style="margin-top: 10%; margin-bottom: 10%;">
-							<ul class="icons">
-								<li id="twitterField" style="display: none;"><a id="twitterLink" href="#" target="_blank" class="icon brands fa-twitter">Twitter</a></li>
-                                <li id="editTwitterField" style="display: none;">
+                    <img src="images/pushd_white_no_caption_2.0.png" style="width: 200px; cursor: pointer;" onclick="window.location.replace('/login.html')"/>
+                    
+                    
+                    <div style="display: flex;">
+                        <section id="main" style="background-image: url(images/grey.png); background-repeat: repeat;">
+                            <header>
+                                <span class="avatar">
+                                    <img id="profileImage" src="images/avatar.jpg" alt="" style="height:122px; width:122px;"/>
+                                </span>
+                                <label id="imageChooser" for="imageFileInput" class="chooser" style="display: none;">Upload Photo</label>
+                                <input id='imageFileInput' name="file" type="file" style="display: none;"/>
+                                <h1 id="profileName" style="display: none;"></h1>
+                                <div class="field">
+                                    <input type="text" style="display: none;" id="editName" placeholder="Name"/>
+                                </div>
+                                <p id="tagline" style="display: none;"></p>
+                                <div class="field">
+                                    <input type="text" style="display: none;" id="editTagline" placeholder="Tagline" />
+                                </div>
+                            </header>
+                            <p id="toShareLine" style="letter-spacing: normal; font-family: inherit; text-transform: none;  margin-bottom: 1%; display: none;">Your unique Pushd link to share:</p>
+                            <i id='toshareIcon' onclick="copyShareLink()" class="far fa-clipboard" style="cursor: pointer; display: none;"></i>
+                            <small id='toshare' style="font-size: x-small; letter-spacing: normal; font-family: inherit; text-transform: none;"></small>
+                            <!--
+                            <hr />
+                            <h2>Extra Stuff!</h2>
+                            <form method="post" action="#">
+                                <div class="fields">
                                     <div class="field">
-                                        <input type="text" id="editTwitter" placeholder="Twitter link" />
+                                        <input type="text" name="name" id="name" placeholder="Name" />
                                     </div>
-                                </li>
-								<li id="instagramField" style="display: none;"><a id="instagramLink" href="#" target="_blank" class="icon brands fa-instagram">Instagram</a></li>
-								<li id="editInstagramField" style="display: none;">
-                                    <div class="field" >
-                                        <input type="text" id="editInstagram" placeholder="Instagram link" />
-                                    </div>
-                                </li>
-								<li id="facebookField" style="display: none;"><a id="facebookLink" href="#" target="_blank" class="icon brands fa-facebook-f">Facebook</a></li>
-								<li  id="editFacebookField" style="display: none;">
                                     <div class="field">
-                                        <input type="text" id="editFacebook" placeholder="Facebook link" />
+                                        <input type="email" name="email" id="email" placeholder="Email" />
                                     </div>
-                                </li>
-							</ul>
-                            <button id='subButton' style="display: none;" class="button" onclick="subButtonClick()" disabled>Subscribe</button>
-							<button id='logoutButton' style="display: none;" class="button" onclick="logout()">Logout</button>
-                            <button id='editButton' style="display: none;" class="button" onclick="edit()">Edit</button>
-                            <button id='saveButton' style="display: none;" class="button" onclick="save()">Save</button>
-                            <button id='pushButton' style="display: none;" class="button" onclick="window.location.replace('/push.html')">Push</button>
-						</footer>
-					</section>
+                                    <div class="field">
+                                        <select name="department" id="department">
+                                            <option value="">Department</option>
+                                            <option value="sales">Sales</option>
+                                            <option value="tech">Tech Support</option>
+                                            <option value="null">/dev/null</option>
+                                        </select>
+                                    </div>
+                                    <div class="field">
+                                        <textarea name="message" id="message" placeholder="Message" rows="4"></textarea>
+                                    </div>
+                                    <div class="field">
+                                        <input type="checkbox" id="human" name="human" /><label for="human">I'm a human</label>
+                                    </div>
+                                    <div class="field">
+                                        <label>But are you a robot?</label>
+                                        <input type="radio" id="robot_yes" name="robot" /><label for="robot_yes">Yes</label>
+                                        <input type="radio" id="robot_no" name="robot" /><label for="robot_no">No</label>
+                                    </div>
+                                </div>
+                                <ul class="actions special">
+                                    <li><a href="#" class="button">Get Started</a></li>
+                                </ul>
+                            </form>
+                            <hr />
+                            -->
+                            <footer>
+                                <hr style="margin-top: 10%; margin-bottom: 10%;">
+                                <ul class="icons">
+                                    <li id="twitterField" style="display: none;"><a id="twitterLink" href="#" target="_blank" class="icon brands fa-twitter">Twitter</a></li>
+                                    <li id="editTwitterField" style="display: none;">
+                                        <div class="field">
+                                            <input type="text" id="editTwitter" placeholder="Twitter link" />
+                                        </div>
+                                    </li>
+                                    <li id="instagramField" style="display: none;"><a id="instagramLink" href="#" target="_blank" class="icon brands fa-instagram">Instagram</a></li>
+                                    <li id="editInstagramField" style="display: none;">
+                                        <div class="field" >
+                                            <input type="text" id="editInstagram" placeholder="Instagram link" />
+                                        </div>
+                                    </li>
+                                    <li id="facebookField" style="display: none;"><a id="facebookLink" href="#" target="_blank" class="icon brands fa-facebook-f">Facebook</a></li>
+                                    <li  id="editFacebookField" style="display: none;">
+                                        <div class="field">
+                                            <input type="text" id="editFacebook" placeholder="Facebook link" />
+                                        </div>
+                                    </li>
+                                </ul>
+                                <button id='subButton' style="display: none;" class="button" onclick="subButtonClick()" disabled>Subscribe</button>
+                                <button id='logoutButton' style="display: none;" class="button" onclick="logout()">Logout</button>
+                                <button id='editButton' style="display: none;" class="button" onclick="edit()">Edit</button>
+                                <button id='saveButton' style="display: none;" class="button" onclick="save()">Save</button>
+                                <button id='pushButton' style="display: none;" class="button" onclick="pushButtonClick()">Push</button>
+                            </footer>
+                        </section>
+                        <div id="settingsButtons" class="settingsButtons">
+                            <span id="" class="settings" onclick="insights()"><img src="images/line-chart.png" style="width: 100%; opacity: 80%;"></span>
+                            <span id="" class="settings" onclick="control()"><img src="images/control.png" style="width: 100%; opacity: 80%;"></span>
+                            <span id="" class="settings" onclick="settings()"><img src="images/settings.png" style="width: 100%; opacity: 80%;"></span>
+                        </div>
+                    </div>
 
 				<!-- Footer -->
 					<footer id="footer">
 						<ul class="copyright">
-							<li>&copy; EmPushy</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							<li>&copy; Pushd</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
                             <li id="signInLink"><a href="/index.html">Sign In</a></li>
 						</ul>
 					</footer>
@@ -146,7 +185,8 @@
         <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
-        <script src="./path/to/dropzone.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+        <script src="assets/js/ant-toast.js"></script>
         
             <script type="application/javascript" src="assets/js/test.js"></script>
 			<script>
@@ -193,14 +233,16 @@
                             success: function(data) {
                                 try{
                                     
-                                    if(data['success']){
-                                        
-                                        
+                                    if(data['success']){                                        
                                         initSubscribe(data['snapshot']['applicationServerKey'])
                                         
                                         $('#profileName').text(data['snapshot']['name'])
                                         $('#editName').val(data['snapshot']['name'])
-                                        $('#profileImage').attr('src', data['snapshot']['profileImage'])
+                                        
+                                        imageURL = 'data:image/jpeg;base64'+data['snapshot']['profileImage']
+                                        
+                                        resizeProfilerForIcon(imageURL)
+                                        $('#profileImage').attr('src', imageURL)
                                         
                                         $('#tagline').text(data['snapshot']['tagline'])
                                         $('#editTagline').val(data['snapshot']['tagline'])
@@ -236,7 +278,6 @@
                                         }
                                         
                                     }
-                                    /**/
                                 }
                                 catch(err){}
                             },
@@ -245,6 +286,39 @@
                             } 
                         });
                     }  
+                }
+                
+                function resizeProfilerForIcon(dataURL){
+                    // resize profileImage
+                    var img = document.createElement("img");
+                    img.src = dataURL
+
+                    var canvas = document.createElement("canvas");
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+
+                    var MAX_WIDTH = 64;
+                    var MAX_HEIGHT = 64;
+                    var width = img.width;
+                    var height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+                    dataurl = canvas.toDataURL('image/jpeg', 0.7);
+                    localStorage.setItem('profileIcon', dataurl)
                 }
                 
                 function initApp() {    
@@ -268,7 +342,7 @@
                             $('#toshare').show()
                             $('#toShareLine').show()
                             $('#toshareIcon').show()
-                            $('#settingsButton').show()
+                            $('#settingsButtons').attr('style', 'display: flex')
                             $('#signInLink').hide()
 
                             getPublicInfo(uid)
@@ -306,11 +380,13 @@
                     
                     var fileReader = new FileReader();
                     fileReader.addEventListener("load", function(e) {
-                        $('#profileImage').attr('src', e.target.result)        
+                        $('#profileImage').attr('src', e.target.result.replace('data:image/png;base64', 'data:image/jpeg;base64')) 
+                        
+                        
+                        resizeProfilerForIcon(e.target.result)
                     }); 
 
-                    $('#imageChooser').change(function(e) { 
-                        console.log('changed')
+                    $('#imageFileInput').change(function(e) { 
                         fileReader.readAsDataURL( this.files[0] );
                     });
                 }
@@ -322,7 +398,7 @@
                     twitterURL = $('#editTwitter').val()
                     instagramURL = $('#editInstagram').val()
                     facebookURL = $('#editFacebook').val()
-                    profileImage = $('#profileImage').attr('src')
+                    profileImage = $('#profileImage').attr('src').replace('data:image/png;base64', '').replace('data:image/jpeg;base64', '')
                     
                     $('#profileName').text(name)
                     $('#tagline').text(tagline)
@@ -421,7 +497,21 @@
                 }
                 
                 function settings() {
-                    
+                    Message.default.info('Feature coming soon')
+                }
+                
+                function insights() {
+                    Message.default.info('Feature coming soon')                 
+                }
+                
+                function control() {
+                    Message.default.info('Feature coming soon')                   
+                }
+                
+                function pushButtonClick(){
+                    imageURL = $('#profileImage').attr('src')
+                    resizeProfilerForIcon(imageURL)
+                    window.location.replace('/push.html')
                 }
                 
                 

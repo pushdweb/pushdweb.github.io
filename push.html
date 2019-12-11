@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>EmPushy Push</title>
+		<title>Pushd</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -20,10 +20,11 @@
 			<div id="wrapper">
 
 				<!-- Main -->
-					<section id="main">
+                    <img src="images/pushd_white_no_caption_2.0.png" style="width: 200px; cursor: pointer;" onclick="window.location.replace('/login.html')"/>
+					<section id="main" style="background-image: url(images/grey.png); background-repeat: repeat;">
 						<header>
 							<span class="avatar">
-                                <img src="images/avatar.jpg" alt="" />
+                                <img id="profileImage" src="images/avatar.jpg" alt="" style="height:35px; width:35px;"/>
                             </span>
 						</header>
 						<h2>Notification</h2>
@@ -47,7 +48,7 @@
 				<!-- Footer -->
 					<footer id="footer">
 						<ul class="copyright">
-							<li>&copy; EmPushy</li><li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
+							<li>&copy; Pushd</li><li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
 						</ul>
 					</footer>
 
@@ -89,7 +90,7 @@
                 
                 function initApp() {
                     const params = new URLSearchParams(window.location.search);  
-                    const name = params.get("p"); 
+                    const name = params.get("p");
                     
                     firebase.auth().onAuthStateChanged(function(user) {
                         if (user) {
@@ -97,6 +98,11 @@
                             var email = user.email;
                             var uid = user.uid;
                             localStorage.setItem('userId', uid);
+                            var profileIcon = localStorage.getItem('profileIcon')
+                            console.log(profileIcon)
+                            if(profileIcon!=null){
+                                $('#profileImage').attr('src', profileIcon) 
+                            }
                             
                         } else {
                             // User is signed out.
@@ -110,13 +116,15 @@
                 function pushNotification(){
                     var title = $('#title').val()
                     var message = $('#message').val()
+                    var icon = localStorage.getItem('profileIcon');
                     
                     var pushUrl = "http://localhost:5000/v1/push";
 
                     var formData = JSON.stringify({
                         "userId": localStorage.getItem('userId'),
                         "title": title,
-                        "message": message               
+                        "message": message,
+                        "icon": icon
                     })
 
                     $.ajax ({
@@ -143,6 +151,19 @@
                 function clearForm(){
                     var title = $('#title').val('')
                     var message = $('#message').val('')
+                }
+                
+                function getLocation() {
+                  if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                  } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                  }
+                }
+
+                function showPosition(position) {
+                  console.log( "Latitude: " + position.coords.latitude +
+                  "<br>Longitude: " + position.coords.longitude);
                 }
 			</script>
 
