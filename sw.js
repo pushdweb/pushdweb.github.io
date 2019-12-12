@@ -16,22 +16,22 @@ self.addEventListener('push', function(event) {
             {
               action: 'read-later',
               title: 'Read later',
-              icon: '/images/badge.png'
+              icon: 'https://pushdweb.github.io/images/like.png'
             },
             {
               action: 'liked',
               title: '<strong>like</strong>',
-              icon: '/images/badge.png'
+              icon: 'https://pushdweb.github.io/images/like.png'
             },
             {
               action: 'another',
               title: 'Another',
-              icon: '/images/badge.png'
+              icon: 'https://pushdweb.github.io/images/like.png'
             },
             {
               action: 'again',
               title: 'Again',
-              icon: '/images/badge.png'
+              icon: 'https://pushdweb.github.io/images/like.png'
             }
         ]
     };
