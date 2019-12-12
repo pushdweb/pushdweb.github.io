@@ -40,6 +40,8 @@ self.addEventListener('push', function(event) {
 });
 
 self.addEventListener('notificationclick', function(event) {
+    
+    event.notification.close();
     if (!event.action) {
         // Was a normal notification click
         console.log('Notification Click.');
