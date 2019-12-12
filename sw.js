@@ -28,6 +28,11 @@ self.addEventListener('push', function(event) {
               action: 'another',
               title: 'another',
               icon: '/images/demos/action-2-128x128.png'
+            },
+            {
+              action: 'again',
+              title: 'again',
+              icon: '/images/demos/action-2-128x128.png'
             }
         ]
     };
