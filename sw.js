@@ -7,7 +7,7 @@ self.addEventListener('push', function(event) {
     const title = notification.title;
     const options = {
         body: notification.message,
-        badge: '/images/favicon.png',
+        badge: '/images/badge.png',
         icon: notification.icon,
         //image: 'https://fraserkieran.com/images/gym-push.png',
         data: {
@@ -16,22 +16,22 @@ self.addEventListener('push', function(event) {
         actions: [
             {
               action: 'read-later',
-              title: 'read later',
+              title: 'Read later',
               icon: '/images/demos/action-1-128x128.png'
             },
             {
               action: 'liked',
-              title: 'like',
+              title: 'Like',
               icon: '/images/demos/action-2-128x128.png'
             },
             {
               action: 'another',
-              title: 'another',
+              title: 'Another',
               icon: '/images/demos/action-2-128x128.png'
             },
             {
               action: 'again',
-              title: 'again',
+              title: 'Again',
               icon: '/images/demos/action-2-128x128.png'
             }
         ]
