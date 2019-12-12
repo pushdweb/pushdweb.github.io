@@ -80,7 +80,7 @@
                                 var isNewUser = authResult.additionalUserInfo.isNewUser;
                                 var uid = authResult.user.uid;
                                 if(isNewUser){                                    
-                                    var newUserURL = "http://localhost:5000/v1/new-user";
+                                    var newUserURL = "https://autoempushy.herokuapp.com/v1/new-user";
                                     var formData = JSON.stringify({
                                         'userId': uid,         
                                     })
