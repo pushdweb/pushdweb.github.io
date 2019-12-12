@@ -4,6 +4,10 @@ self.addEventListener('push', function(event) {
 
     notification = event.data.json()
     const title = notification.title;
+    
+    // send request to update delivery metric for this notification..
+    // need the id of user pushing.. 
+    
     const options = {
         body: notification.message,
         badge: '/images/badge.png',
@@ -15,24 +19,14 @@ self.addEventListener('push', function(event) {
         actions: [
             {
               action: 'read-later',
-              title: 'Read later',
-              icon: '⌛'
+              title: '⌛ Later',
+              icon: 'https://autoempushy.herokuapp.com/images/later.png'
             },
             {
               action: 'liked',
-              title: 'Like',
-              icon: '👍'
-            },
-            {
-              action: 'another',
-              title: 'Another',
-              icon: 'https://pushdweb.github.io/images/like.png'
-            },
-            {
-              action: 'again',
-              title: 'Again',
-              icon: 'https://pushdweb.github.io/images/like.png'
-            }
+              title: '👍 Like',
+              icon: 'https://autoempushy.herokuapp.com/images/later.png'
+            }            
         ]
     };
 
