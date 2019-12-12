@@ -36,6 +36,9 @@
 								<div class="field">
 									<textarea name="message" id="message" placeholder="Content" rows="3" style="text-transform: none"></textarea>
 								</div>
+                                <div class="field">
+									<input type="text" name="embedLink" id="embedLink" placeholder="Embed post" style="text-transform: none"/>
+								</div>
 							</div>
 						</form>
 						<hr />
@@ -116,6 +119,7 @@
                 function pushNotification(){
                     var title = $('#title').val()
                     var message = $('#message').val()
+                    var embedLink = $('#embedLink').val()
                     var icon = localStorage.getItem('profileIcon');
                     
                     var pushUrl = "https://autoempushy.herokuapp.com/v1/push";
@@ -124,6 +128,7 @@
                         "userId": localStorage.getItem('userId'),
                         "title": title,
                         "message": message,
+                        "embedLink": embedLink,
                         "icon": icon
                     })
 
@@ -151,9 +156,10 @@
                 function clearForm(){
                     var title = $('#title').val('')
                     var message = $('#message').val('')
+                    var message = $('#embedLink').val('')
                 }
                 
-                function getLocation() {
+                /*function getLocation() {
                   if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(showPosition);
                   } else {
@@ -164,7 +170,7 @@
                 function showPosition(position) {
                   console.log( "Latitude: " + position.coords.latitude +
                   "<br>Longitude: " + position.coords.longitude);
-                }
+                }*/
 			</script>
 
 	</body>
