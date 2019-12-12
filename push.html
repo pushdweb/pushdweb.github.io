@@ -118,7 +118,7 @@
                     var message = $('#message').val()
                     var icon = localStorage.getItem('profileIcon');
                     
-                    var pushUrl = "http://localhost:5000/v1/push";
+                    var pushUrl = "https://autoempushy.herokuapp.com/v1/push";
 
                     var formData = JSON.stringify({
                         "userId": localStorage.getItem('userId'),
