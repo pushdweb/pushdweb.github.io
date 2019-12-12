@@ -1,7 +1,6 @@
 self.addEventListener('push', function(event) {
     console.log('[Service Worker] Push Received.');
     console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
-    console.log(event)
 
     notification = event.data.json()
     const title = notification.title;
@@ -17,22 +16,22 @@ self.addEventListener('push', function(event) {
             {
               action: 'read-later',
               title: 'Read later',
-              icon: '/images/demos/action-1-128x128.png'
+              icon: '/images/badge.png'
             },
             {
               action: 'liked',
               title: 'Like',
-              icon: '/images/demos/action-2-128x128.png'
+              icon: '/images/badge.png'
             },
             {
               action: 'another',
               title: 'Another',
-              icon: '/images/demos/action-2-128x128.png'
+              icon: '/images/badge.png'
             },
             {
               action: 'again',
               title: 'Again',
-              icon: '/images/demos/action-2-128x128.png'
+              icon: '/images/badge.png'
             }
         ]
     };
