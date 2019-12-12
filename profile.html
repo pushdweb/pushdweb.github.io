@@ -217,7 +217,7 @@
                 
                 function getPublicInfo(uid){
                     
-                    var publicProfileURL = "https://autoempushy.herokuapp.com/v1/public-profile";
+                    var publicProfileURL = "http://localhost:5000/v1/public-profile";
                     if(uid!=null){
                         var formData = JSON.stringify({
                             'uid': uid         
@@ -392,7 +392,7 @@
                 }
                 
                 function save(){
-                    var updateURL = "https://autoempushy.herokuapp.com/v1/update-profile";
+                    var updateURL = "http://localhost:5000/v1/update-profile";
                     name = $('#editName').val()
                     tagline = $('#editTagline').val()
                     twitterURL = $('#editTwitter').val()
