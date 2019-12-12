@@ -32,7 +32,6 @@ function initSubscribe(serverKey){
     const params = new URLSearchParams(window.location.search);  
     var subId = params.get("p");
     if(subId!=null && subId!=localStorage.getItem('userId')){
-        console.log('here')
         /* Check if service workers and push messaging is supported by the browser */
         if ('serviceWorker' in navigator && 'PushManager' in window) {
           console.log('Service Worker and Push is supported');
@@ -120,7 +119,6 @@ function updateBtn() {
       $('#subButton').prop('disabled', false);
   }
   else {
-      console.log(Notification.permission)
       $.confirm({
             title: "<h2 style='text-transform: capitalize; letter-spacing: normal; line-spacing: normal;'>Notification Permissions</h2>",
             content: "<h5 style='text-transform: none; letter-spacing: normal; line-spacing: normal;'>To receive <strong style='text-transform: capitalize;'>Pushd</strong> notifications from the content creators on this platform, you must grant push-notification permission to <strong style='text-transform: capitalize;'>Pushd</strong>.</h5>",
@@ -152,7 +150,6 @@ function updateBtn() {
 function askPermission() {
   return new Promise(function(resolve, reject) {
         const permissionResult = Notification.requestPermission(function(result) {
-            console.log(result)
             if(result==='granted'){
                 if (isSubscribed) {
                   $('#subButton').html('Unsubscribe');
@@ -188,7 +185,7 @@ function unsubscribeUser() {
     if (subscription && subId!=null) {
         // unsub api call using subscription object to search for applicable sub
         
-        var subUrl = "http://localhost:5000/v1/unsub";
+        var subUrl = "https://autoempushy.herokuapp.com/v1/unsub";
 
         var formData = JSON.stringify({
             "userId": null,
@@ -259,8 +256,7 @@ function updateSubscriptionOnServer(subscription) {
     var subId = params.get("p");
     var subInfo = subscription
 
-    console.log(subId)
-    var subUrl = "http://localhost:5000/v1/sub";
+    var subUrl = "https://autoempushy.herokuapp.com/v1/sub";
 
     var formData = JSON.stringify({
         "userId": null,
@@ -319,7 +315,6 @@ function writeUserData(userId, name, email) {
 }
 
 function displayNotification() {
-    console.log('display notification')
     if(Notification.permission === 'granted') {
         navigator.serviceWorker.ready.then(function(registration) {
             registration.showNotification('Vibration Sample', {
