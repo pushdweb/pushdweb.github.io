@@ -23,6 +23,11 @@ self.addEventListener('push', function(event) {
               action: 'liked',
               title: 'like',
               icon: '/images/demos/action-2-128x128.png'
+            },
+            {
+              action: 'another',
+              title: 'another',
+              icon: '/images/demos/action-2-128x128.png'
             }
         ]
     };
