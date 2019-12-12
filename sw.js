@@ -43,15 +43,18 @@ self.addEventListener('notificationclick', function(event) {
     if (!event.action) {
         // Was a normal notification click
         console.log('Notification Click.');
+        Message.default.info('Clicked')
         return;
     }
 
     switch (event.action) {
     case 'read-later':
+      Message.default.info('Later')
       console.log('deliver notification later');
       console.log(event)
       break;
     case 'liked':
+      Message.default.info('Liked')
       console.log('Update like metrics for this notification');
       break;
     default:
@@ -63,5 +66,6 @@ self.addEventListener('notificationclick', function(event) {
 self.addEventListener('notificationclose', function(event) {
     if (event.notification.data) {
         console.log(event.notification.data.id)
+        Message.default.info('closed')
     }
 });
