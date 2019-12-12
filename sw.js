@@ -3,7 +3,7 @@ self.addEventListener('push', function(event) {
     console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
     console.log(event)
 
-    /*notification = event.data.json()
+    notification = event.data.json()
     const title = notification.title;
     const options = {
         body: notification.message,
@@ -28,8 +28,6 @@ self.addEventListener('push', function(event) {
     };
 
     event.waitUntil(self.registration.showNotification(title, options));
-    */
-    event.waitUntil(self.registration.showNotification('Some title', { body: 'some message'}));
 });
 
 self.addEventListener('notificationclick', function(event) {
