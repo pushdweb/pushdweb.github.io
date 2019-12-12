@@ -20,7 +20,7 @@ self.addEventListener('push', function(event) {
             },
             {
               action: 'liked',
-              title: 'Like',
+              title: '<strong>like</strong>',
               icon: '/images/badge.png'
             },
             {
