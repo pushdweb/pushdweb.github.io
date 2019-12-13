@@ -43,6 +43,15 @@ self.addEventListener('notificationclick', function(event) {
         // Was a normal notification click
         console.log('Notification Click.');
         update_engagement(event, 'clicked')
+        e.waitUntil(
+            clients.matchAll({includeUncontrolled: true, type: 'window'}).then(function(clients) {
+                for (i = 0; i < clients.length; i++) {
+                    console.log(client[i])
+                    clients[i].navigate('https://pushweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId);
+                    clients[i].focus();
+                }
+            })
+        );
         return;
     }
 
