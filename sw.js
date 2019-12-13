@@ -6,7 +6,8 @@ self.addEventListener('push', function(event) {
     const title = notification.title;
     
     // send request to update delivery metric for this notification..
-    // need the id of user pushing..
+    event = { notification: { data: { notificationId: notification.id, userId: notification.userId } } }
+    update_engagement(event, 'delivered')
     
     const options = {
         body: notification.message,
