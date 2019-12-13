@@ -178,23 +178,23 @@
                 function getPushMetrics(userId, notificationId){
                     var pushRef = firebase.database().ref('users/' + userId + '/pushd/' + notificationId);
                     pushRef.on('value', function(snapshot) {
-                        console.log(snapshot.val())
-                        console.log(snapshot.child('delivered'))
-                        if(snapshot.val().delivered){
-                            console.log('delivered!!')
-                            $('#delivered').text(snapshot.child('delivered').numChildren())
-                        }
-                        if(snapshot.val().clicked){
-                            $('#clicked').text(snapshot.child('clicked').numChildren())
-                        }
-                        if(snapshot.val().liked){
-                            $('#liked').text(snapshot.child('liked').numChildren())
-                        }
-                        if(snapshot.val().later){
-                            $('#later').text(snapshot.child('later').numChildren())
-                        }
-                        if(snapshot.val().dismissed){
-                            $('#dismissed').text(snapshot.child('dismissed').numChildren())
+                        if(snapshot!=null){
+                            if(snapshot.val().delivered){
+                                console.log('delivered!!')
+                                $('#delivered').text(snapshot.child('delivered').numChildren())
+                            }
+                            if(snapshot.val().clicked){
+                                $('#clicked').text(snapshot.child('clicked').numChildren())
+                            }
+                            if(snapshot.val().liked){
+                                $('#liked').text(snapshot.child('liked').numChildren())
+                            }
+                            if(snapshot.val().later){
+                                $('#later').text(snapshot.child('later').numChildren())
+                            }
+                            if(snapshot.val().dismissed){
+                                $('#dismissed').text(snapshot.child('dismissed').numChildren())
+                            }
                         }
                     });
                 }
