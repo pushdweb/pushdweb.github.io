@@ -178,9 +178,10 @@
                 function getPushMetrics(userId, notificationId){
                     var pushRef = firebase.database().ref('users/' + userId + '/pushd/' + notificationId);
                     pushRef.on('value', function(snapshot) {
-                        console.log(snapshot)
+                        console.log(snapshot.val())
                         console.log(snapshot.child('delivered'))
                         if(snapshot.val().delivered){
+                            console.log('delivered!!')
                             $('#delivered').val(snapshot.child('delivered').numChildren())
                         }
                         if(snapshot.val().clicked){
