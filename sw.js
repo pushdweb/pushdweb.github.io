@@ -77,12 +77,20 @@ function update_engagement(event, engagement){
         "engagement": engagement
     })
 
-    $.ajax ({
+    /*$.ajax ({
         url: engageUrl,
         type: "POST",
         data: formData,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         crossDomain: true 
-    });
+    });*/
+    
+    fetch(engageUrl, {
+        method: 'post',
+        headers: {
+          "Content-type": "application/json; charset=utf-8"
+        },
+        body: formData
+    })
 }
