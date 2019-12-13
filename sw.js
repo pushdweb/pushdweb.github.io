@@ -43,7 +43,7 @@ self.addEventListener('notificationclick', function(event) {
         // Was a normal notification click
         console.log('Notification Click.');
         update_engagement(event, 'clicked')
-        e.waitUntil(
+        event.waitUntil(
             clients.matchAll({includeUncontrolled: true, type: 'window'}).then(function(clients) {
                 for (i = 0; i < clients.length; i++) {
                     console.log(client[i])
