@@ -66,6 +66,7 @@
         
             <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
             <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
         
 			<script>
 				// Your web app's Firebase configuration
@@ -81,6 +82,7 @@
                 };
                 // Initialize Firebase
                 firebase.initializeApp(firebaseConfig);
+                var database = firebase.database();
                 
 				if ('addEventListener' in window) {
 					window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-preload\b/, ''); });
@@ -123,8 +125,10 @@
                     var icon = localStorage.getItem('profileIcon');
                     
                     var pushUrl = "https://autoempushy.herokuapp.com/v1/push";
+                    var notificationId = Math.round(now.getTime() / 1000) 
 
                     var formData = JSON.stringify({
+                        "notificationId": notificationId,
                         "userId": localStorage.getItem('userId'),
                         "title": title,
                         "message": message,
@@ -141,7 +145,8 @@
                         crossDomain: true,
                         success: function(data) {
                             try{
-                                
+                                if(localStorage.getItem('userId') && notificationId)
+                                    getPushMetrics(localStorage.getItem('userId'), notificationId)
                             }
                             catch(err){}
                         },
@@ -157,6 +162,13 @@
                     var title = $('#title').val('')
                     var message = $('#message').val('')
                     var message = $('#embedLink').val('')
+                }
+                
+                function getPushMetrics(userId, notificationId){
+                    var pushRef = firebase.database().ref('users/' + userId + '/pushd/' + notificationId);
+                    pushRef.on('value', function(snapshot) {
+                      console.log(snapshot.val());
+                    });
                 }
                 
                 /*function getLocation() {
