@@ -20,12 +20,12 @@ self.addEventListener('push', function(event) {
             {
               action: 'read-later',
               title: '⌛ Later',
-              icon: 'https://autoempushy.herokuapp.com/images/later.png'
+              icon: 'https://pushdweb.github.io/images/later.png'
             },
             {
               action: 'liked',
               title: '👍 Like',
-              icon: 'https://autoempushy.herokuapp.com/images/later.png'
+              icon: 'https://pushdweb.github.io/images/like.png'
             }            
         ]
     };
