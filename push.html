@@ -194,6 +194,12 @@
                     var title = $('#title').val('')
                     var message = $('#message').val('')
                     var message = $('#embedLink').val('')
+                    
+                    $('#delivered').text(0)
+                    $('#clicked').text(0)
+                    $('#liked').text(0)
+                    $('#later').text(0)
+                    $('#dismissed').text(0)
                 }
                 
                 function getPushMetrics(userId, notificationId){
