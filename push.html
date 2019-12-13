@@ -182,19 +182,19 @@
                         console.log(snapshot.child('delivered'))
                         if(snapshot.val().delivered){
                             console.log('delivered!!')
-                            $('#delivered').val(snapshot.child('delivered').numChildren())
+                            $('#delivered').text(snapshot.child('delivered').numChildren())
                         }
                         if(snapshot.val().clicked){
-                            $('#clicked').val(snapshot.child('clicked').numChildren())
+                            $('#clicked').text(snapshot.child('clicked').numChildren())
                         }
                         if(snapshot.val().liked){
-                            $('#liked').val(snapshot.child('liked').numChildren())
+                            $('#liked').text(snapshot.child('liked').numChildren())
                         }
                         if(snapshot.val().later){
-                            $('#later').val(snapshot.child('later').numChildren())
+                            $('#later').text(snapshot.child('later').numChildren())
                         }
                         if(snapshot.val().dismissed){
-                            $('#dismissed').val(snapshot.child('dismissed').numChildren())
+                            $('#dismissed').text(snapshot.child('dismissed').numChildren())
                         }
                     });
                 }
