@@ -750,6 +750,18 @@
         margin-bottom: 5px;
     }
 
+    .push-metric {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        padding: 15%;
+        border-radius: 20%;
+        border: solid 1px white;
+        margin-bottom: 5px;
+        text-align: center;
+        color: white;
+    }
+
     .settings:hover {
         border-color: #ff7496;
         background: #ff7496 !important;

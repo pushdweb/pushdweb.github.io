@@ -21,32 +21,41 @@
 
 				<!-- Main -->
                     <img src="images/pushd_white_no_caption_2.0.png" style="width: 200px; cursor: pointer;" onclick="window.location.replace('/login.html')"/>
-					<section id="main" style="background-image: url(images/grey.png); background-repeat: repeat;">
-						<header>
-							<span class="avatar">
-                                <img id="profileImage" src="images/avatar.jpg" alt="" style="height:35px; width:35px;"/>
-                            </span>
-						</header>
-						<h2>Notification</h2>
-						<form>
-							<div class="fields">
-								<div class="field">
-									<input type="text" name="title" id="title" placeholder="Title" style="text-transform: none"/>
-								</div>
-								<div class="field">
-									<textarea name="message" id="message" placeholder="Content" rows="3" style="text-transform: none"></textarea>
-								</div>
-                                <div class="field">
-									<input type="text" name="embedLink" id="embedLink" placeholder="Embed post" style="text-transform: none"/>
-								</div>
-							</div>
-						</form>
-						<hr />
-						<footer>
-                            <button class="button" onclick="window.location.replace('/profile.html')">Cancel</button>
-                            <button class="button" onclick="pushNotification()">Push</button>
-						</footer>
-					</section>
+                    <div style="display: flex;">
+                        <section id="main" style="background-image: url(images/grey.png); background-repeat: repeat;">
+                            <header>
+                                <span class="avatar">
+                                    <img id="profileImage" src="images/avatar.jpg" alt="" style="height:35px; width:35px;"/>
+                                </span>
+                            </header>
+                            <h2>Notification</h2>
+                            <form>
+                                <div class="fields">
+                                    <div class="field">
+                                        <input type="text" name="title" id="title" placeholder="Title" style="text-transform: none"/>
+                                    </div>
+                                    <div class="field">
+                                        <textarea name="message" id="message" placeholder="Content" rows="3" style="text-transform: none"></textarea>
+                                    </div>
+                                    <div class="field">
+                                        <input type="text" name="embedLink" id="embedLink" placeholder="Embed post" style="text-transform: none"/>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr />
+                            <footer>
+                                <button class="button" onclick="window.location.replace('/profile.html')">Cancel</button>
+                                <button class="button" onclick="pushNotification()">Push</button>
+                            </footer>
+                        </section>
+                        <div id="settingsButtons" class="settingsButtons">
+                            <span id="delivered" class="push-metric">0</span>
+                            <span id="clicked" class="push-metric">0</span>
+                            <span id="liked" class="push-metric">0</span>
+                            <span id="later" class="push-metric">0</span>
+                            <span id="dismissed" class="push-metric">0</span>
+                        </div>
+                    </div>
 
 				<!-- Footer -->
 					<footer id="footer">
@@ -107,6 +116,7 @@
                             console.log(profileIcon)
                             if(profileIcon!=null){
                                 $('#profileImage').attr('src', profileIcon) 
+                                $('#settingsButtons').attr('style', 'display: flex')
                             }
                             
                         } else {
@@ -168,7 +178,21 @@
                 function getPushMetrics(userId, notificationId){
                     var pushRef = firebase.database().ref('users/' + userId + '/pushd/' + notificationId);
                     pushRef.on('value', function(snapshot) {
-                      console.log(snapshot.val());
+                      if(snapshot.child('delivered')){
+                          $('#delivered').val(snapshot.child('delivered').numChildren())
+                      }
+                      if(snapshot.child('clicked')){
+                          $('#clicked').val(snapshot.child('clicked').numChildren())
+                      }
+                      if(snapshot.child('liked')){
+                          $('#liked').val(snapshot.child('liked').numChildren())
+                      }
+                      if(snapshot.child('later')){
+                          $('#later').val(snapshot.child('later').numChildren())
+                      }
+                      if(snapshot.child('dismissed')){
+                          $('#dismissed').val(snapshot.child('dismissed').numChildren())
+                      }
                     });
                 }
                 
