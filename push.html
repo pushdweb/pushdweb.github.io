@@ -10,9 +10,21 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/ant-toast.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.css" />
         
+        <style>
+            .vanilla-antd-message {
+                position: fixed;
+                top: 10vh;
+                left: 10vw;
+                right: 10vw;
+                z-index: 9999;
+                text-transform: none;
+                text-align: center;
+            }
+        </style>
 	</head>
 	<body class="is-preload">
 
@@ -48,8 +60,15 @@
                                 <button class="button" onclick="pushNotification()">Push</button>
                             </footer>
                         </section>
+                        <div id="" class="settingsButtons" style="display: flex;">
+                            <img src="images/ic_delivered.png" class="push-metric-ic" onclick="metricClicked('delivered')">
+                            <img src="images/ic_clicked.png" class="push-metric-ic" onclick="metricClicked('clicked')">
+                            <img src="images/ic_like.png" class="push-metric-ic" onclick="metricClicked('liked')">
+                            <img src="images/ic_later.png" class="push-metric-ic" onclick="metricClicked('later')">
+                            <img src="images/ic_dismissed.png" class="push-metric-ic" onclick="metricClicked('dismissed')">
+                        </div>
                         <div id="settingsButtons" class="settingsButtons">
-                            <span id="delivered" class="push-metric">0</span>
+                            <span id="delivered" class="push-metric">1</span>
                             <span id="clicked" class="push-metric">0</span>
                             <span id="liked" class="push-metric">0</span>
                             <span id="later" class="push-metric">0</span>
@@ -71,6 +90,8 @@
               src="https://code.jquery.com/jquery-3.4.1.min.js"
               integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
               crossorigin="anonymous"></script>
+            <!--https://github.com/MinimalistYing/vanilla-antd-message-->
+            <script src="assets/js/ant-toast.js"></script>
             <!--<script type="application/javascript" src="assets/js/test.js"></script>-->
         
             <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
@@ -197,6 +218,28 @@
                             }
                         }
                     });
+                }
+                
+                function metricClicked(metric){
+                    message = ''
+                    switch(metric){
+                        case 'delivered':
+                            message = 'The number of people your notification was delivered to'
+                            break
+                        case 'clicked':
+                            message = 'The number of people who opened your notification to view it in more detail'
+                            break
+                        case 'liked':
+                            message = 'The number of people who liked your notification'
+                            break
+                        case 'later':
+                            message = 'The number of people who decided to save your notification for later'
+                            break
+                        case 'dismissed':
+                            message = 'The number of people who dismissed your notification'
+                            break
+                    }
+                    Message.default.info(message)
                 }
                 
                 /*function getLocation() {

@@ -751,7 +751,6 @@
     }
 
     .push-metric {
-        cursor: pointer;
         width: 40px;
         height: 40px;
         padding: 15%;
@@ -760,6 +759,22 @@
         margin-bottom: 5px;
         text-align: center;
         color: white;
+    }
+
+    .push-metric-ic {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        padding: 15%;
+        border-radius: 20%;
+        margin-bottom: 5px;
+        text-align: center;
+        color: white;
+    }
+
+    .push-metric-ic:hover {
+        border-color: #ff7496;
+        background: #ff7496 !important;
     }
 
     .settings:hover {
