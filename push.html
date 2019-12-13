@@ -178,21 +178,23 @@
                 function getPushMetrics(userId, notificationId){
                     var pushRef = firebase.database().ref('users/' + userId + '/pushd/' + notificationId);
                     pushRef.on('value', function(snapshot) {
-                      if(snapshot.child('delivered')){
-                          $('#delivered').val(snapshot.child('delivered').numChildren())
-                      }
-                      if(snapshot.child('clicked')){
-                          $('#clicked').val(snapshot.child('clicked').numChildren())
-                      }
-                      if(snapshot.child('liked')){
-                          $('#liked').val(snapshot.child('liked').numChildren())
-                      }
-                      if(snapshot.child('later')){
-                          $('#later').val(snapshot.child('later').numChildren())
-                      }
-                      if(snapshot.child('dismissed')){
-                          $('#dismissed').val(snapshot.child('dismissed').numChildren())
-                      }
+                        console.log(snapshot)
+                        console.log(snapshot.child('delivered'))
+                        if(snapshot.val().delivered){
+                            $('#delivered').val(snapshot.child('delivered').numChildren())
+                        }
+                        if(snapshot.val().clicked){
+                            $('#clicked').val(snapshot.child('clicked').numChildren())
+                        }
+                        if(snapshot.val().liked){
+                            $('#liked').val(snapshot.child('liked').numChildren())
+                        }
+                        if(snapshot.val().later){
+                            $('#later').val(snapshot.child('later').numChildren())
+                        }
+                        if(snapshot.val().dismissed){
+                            $('#dismissed').val(snapshot.child('dismissed').numChildren())
+                        }
                     });
                 }
                 
