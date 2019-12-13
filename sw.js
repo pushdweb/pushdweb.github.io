@@ -6,7 +6,7 @@ self.addEventListener('push', function(event) {
     const title = notification.title;
     
     // send request to update delivery metric for this notification..
-    // need the id of user pushing.. 
+    // need the id of user pushing..
     
     const options = {
         body: notification.message,
@@ -14,7 +14,8 @@ self.addEventListener('push', function(event) {
         icon: notification.icon,
         //image: 'https://fraserkieran.com/images/gym-push.png',
         data: {
-            id: "uniqueId"
+            notificationId: notification.id,
+            userId: notification.userId
         },
         actions: [
             {
@@ -36,32 +37,52 @@ self.addEventListener('push', function(event) {
 self.addEventListener('notificationclick', function(event) {
     
     event.notification.close();
+    
     if (!event.action) {
         // Was a normal notification click
         console.log('Notification Click.');
-        Message.default.info('Clicked')
+        update_engagement(event, 'clicked')
         return;
     }
 
     switch (event.action) {
     case 'read-later':
-      Message.default.info('Later')
-      console.log('deliver notification later');
-      console.log(event)
-      break;
+        console.log('deliver notification later');
+        update_engagement(event, 'later')
+        break;
     case 'liked':
-      Message.default.info('Liked')
-      console.log('Update like metrics for this notification');
-      break;
+        console.log('Update like metrics for this notification');
+        update_engagement(event, 'liked')
+        break;
     default:
-      console.log(`Unknown action clicked: '${event.action}'`);
-      break;
+        console.log(`Unknown action clicked: '${event.action}'`);
+        update_engagement(event, 'unknown')
+        break;
     }
 });
 
 self.addEventListener('notificationclose', function(event) {
     if (event.notification.data) {
-        console.log(event.notification.data.id)
-        Message.default.info('closed')
+        update_engagement(event, 'dismissed')
     }
 });
+
+function update_engagement(event, engagement){
+
+    var engageUrl = "https://autoempushy.herokuapp.com/v1/push-engage";
+
+    var formData = JSON.stringify({
+        "userId": event.notification.data.userId,
+        "notificationId": event.notification.data.notificationId,
+        "engagement": engagement
+    })
+
+    $.ajax ({
+        url: engageUrl,
+        type: "POST",
+        data: formData,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        crossDomain: true 
+    });
+}
