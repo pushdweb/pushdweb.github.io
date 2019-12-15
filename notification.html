@@ -34,11 +34,11 @@
 						<header>
                             <div style="display: flex; margin: auto; justify-content: center">
                                 <img id="profileImage" src="images/avatar.jpg" alt="" style="height:35px; width:35px;margin-right:3%;"/>
-                                <h2 style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold;">Some title</h2>
+                                <h2 id="title" style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold;">Some title</h2>
                                 <span style="margin-left: auto;"><i class="fas fa-times fa-2x"></i></span>
                             </div>
 						</header>
-						<p style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold; margin-top: 3%; text-align: left;">The full body of the notification message</p>
+						<p id="message" style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold; margin-top: 3%; text-align: left;">The full body of the notification message</p>
                         <blockquote class="twitter-tweet" style="margin: auto;"><p lang="en" dir="ltr">Today I&#39;m visiting <a href="https://twitter.com/allen_ai?ref_src=twsrc%5Etfw">@allen_ai</a> at the invitation of <a href="https://twitter.com/nlpnoah?ref_src=twsrc%5Etfw">@nlpnoah</a>. Super excited to present my upcoming <a href="https://twitter.com/hashtag/AAAI2020?src=hash&amp;ref_src=twsrc%5Etfw">#AAAI2020</a> work on combining text-based, world knowledge and unanswerable questions - to some of the best minds in QA and RC!</p>&mdash; Anna Rogers (@annargrs) <a href="https://twitter.com/annargrs/status/1204928552870612992?ref_src=twsrc%5Etfw">December 12, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 						<hr/>
 						<footer>
@@ -61,19 +61,50 @@
               src="https://code.jquery.com/jquery-3.4.1.min.js"
               integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
               crossorigin="anonymous"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
         
 			<script>
-				
+				// Your web app's Firebase configuration
+                var firebaseConfig = {
+                    apiKey: "AIzaSyBJpTtm__4p2TRQnBs71PG5u0odryHPxqs",
+                    authDomain: "autoempushy.firebaseapp.com",
+                    databaseURL: "https://autoempushy.firebaseio.com",
+                    projectId: "autoempushy",
+                    storageBucket: "autoempushy.appspot.com",
+                    messagingSenderId: "787581605206",
+                    appId: "1:787581605206:web:5cc765820a98b8008d32f7",
+                    measurementId: "G-NWVD0JG36T"
+                };
+                // Initialize Firebase
+                firebase.initializeApp(firebaseConfig);
+                var database = firebase.database();
                 
 				if ('addEventListener' in window) {
 					window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-preload\b/, ''); });
 					document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
 				}
                 
+                window.addEventListener('load', function() {
+                    const params = new URLSearchParams(window.location.search);  
+                    uid = params.get("p");
+                    nid = params.get("n");
+                    getNotificationDetails(uid, nid)
+                });
+                
                 function close(){
                     // send message to service worker to close the window
                     // as this is where the window was opened
                     // https://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome/19768082#19768082
+                }
+                
+                function getNotificationDetails(userId, notificationId){
+                    var pushRef = firebase.database().ref('users/' + userId + '/pushd/' + notificationId).once('value').then(function(snapshot) {
+                        if(snapshot!=null){
+                            notification = snapshot.val()
+                            $('#title').text(notification.title)
+                            $('#message').text(notification.message)
+                        }
+                    });
                 }
                 
 			</script>
