@@ -13,6 +13,14 @@
         <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.css" />
+        <style>
+            .twitter-tweet {
+                margin-left: auto;
+                margin-right: auto;
+                border: outset;
+                margin-top: 5%!important;
+            }
+        </style>
         
 	</head>
 	<body class="is-preload">
@@ -27,14 +35,15 @@
                             <div style="display: flex; margin: auto; justify-content: center">
                                 <img id="profileImage" src="images/avatar.jpg" alt="" style="height:35px; width:35px;margin-right:3%;"/>
                                 <h2 style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold;">Some title</h2>
+                                <span style="margin-left: auto;"><i class="fas fa-times fa-2x"></i></span>
                             </div>
 						</header>
-						<p style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold; margin-top: 3%;">The full body of the notification message</p>
+						<p style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold; margin-top: 3%; text-align: left;">The full body of the notification message</p>
                         <blockquote class="twitter-tweet" style="margin: auto;"><p lang="en" dir="ltr">Today I&#39;m visiting <a href="https://twitter.com/allen_ai?ref_src=twsrc%5Etfw">@allen_ai</a> at the invitation of <a href="https://twitter.com/nlpnoah?ref_src=twsrc%5Etfw">@nlpnoah</a>. Super excited to present my upcoming <a href="https://twitter.com/hashtag/AAAI2020?src=hash&amp;ref_src=twsrc%5Etfw">#AAAI2020</a> work on combining text-based, world knowledge and unanswerable questions - to some of the best minds in QA and RC!</p>&mdash; Anna Rogers (@annargrs) <a href="https://twitter.com/annargrs/status/1204928552870612992?ref_src=twsrc%5Etfw">December 12, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 						<hr/>
 						<footer>
-                            <button class="button" onclick="window.location.replace('/profile.html')">Cancel</button>
-                            <button class="button" onclick="pushNotification()">Push</button>
+                            <button class="button" onclick="">💾 Later</button>
+                            <button class="button" onclick="">👍 Like</button>
 						</footer>
 					</section>
 
@@ -61,6 +70,11 @@
 					document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
 				}
                 
+                function close(){
+                    // send message to service worker to close the window
+                    // as this is where the window was opened
+                    // https://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome/19768082#19768082
+                }
                 
 			</script>
 

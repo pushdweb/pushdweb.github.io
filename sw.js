@@ -21,7 +21,7 @@ self.addEventListener('push', function(event) {
         actions: [
             {
               action: 'read-later',
-              title: '⌛ Later',
+              title: '💾 Later',
               icon: 'https://pushdweb.github.io/images/ic_later.png'
             },
             {
@@ -43,7 +43,7 @@ self.addEventListener('notificationclick', function(event) {
         // Was a normal notification click
         console.log('Notification Click.');
         update_engagement(event, 'clicked')
-        event.waitUntil(
+        /*event.waitUntil(
             clients.matchAll({includeUncontrolled: true, type: 'window'}).then(function(clients) {
                 for (i = 0; i < clients.length; i++) {
                     console.log(client[i])
@@ -51,7 +51,7 @@ self.addEventListener('notificationclick', function(event) {
                     clients[i].focus();
                 }
             })
-        );
+        );*/
         return;
     }
 
