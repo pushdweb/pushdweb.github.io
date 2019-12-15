@@ -42,6 +42,7 @@ self.addEventListener('notificationclick', function(event) {
     if (!event.action) {
         // Was a normal notification click
         console.log('Notification Click.');
+        update_engagement(event, 'clicked')
         if (clients.openWindow) {
             event.waitUntil(clients.openWindow('https://pushdweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId));
         }
