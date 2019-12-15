@@ -43,7 +43,7 @@ self.addEventListener('notificationclick', function(event) {
         // Was a normal notification click
         console.log('Notification Click.');
         update_engagement(event, 'clicked')
-        event.preventDefault(); // prevent the browser from focusing the Notification's tab
+        /*event.preventDefault(); // prevent the browser from focusing the Notification's tab
         window.open('http://www.mozilla.org', '_blank');
         event.waitUntil(
             clients.matchAll({includeUncontrolled: true, type: 'window'}).then(function(clients) {
@@ -53,7 +53,11 @@ self.addEventListener('notificationclick', function(event) {
                         return clients[i].openWindow('https://pushweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId)
                 }
             })
-        );
+        );*/
+        if (clients.openWindow) {
+            console.log('opening')
+            event.waitUntil(clients.openWindow('https://pushweb.github.io/notification.html'));
+        }
         return;
     }
 
