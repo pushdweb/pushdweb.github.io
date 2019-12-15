@@ -48,7 +48,7 @@ self.addEventListener('notificationclick', function(event) {
                 for (i = 0; i < clients.length; i++) {
                     
                     if(clients[i].openWindow)
-                        return clients.openWindow('https://pushweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId)
+                        return clients[i].openWindow('https://pushweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId)
                 }
             })
         );
