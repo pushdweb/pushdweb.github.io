@@ -46,9 +46,9 @@ self.addEventListener('notificationclick', function(event) {
         event.waitUntil(
             clients.matchAll({includeUncontrolled: true, type: 'window'}).then(function(clients) {
                 for (i = 0; i < clients.length; i++) {
-                    console.log(clients[i])
-                    clients[i].navigate('https://pushweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId);
-                    clients[i].focus();
+                    
+                    if(clients[i].openWindow)
+                        return clients.openWindow('https://pushweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId)
                 }
             })
         );
