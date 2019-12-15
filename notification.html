@@ -39,7 +39,10 @@
                             </div>
 						</header>
 						<p id="message" style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold; margin-top: 3%; text-align: left;">The full body of the notification message</p>
-                        <blockquote class="twitter-tweet" style="margin: auto;"><p lang="en" dir="ltr">Today I&#39;m visiting <a href="https://twitter.com/allen_ai?ref_src=twsrc%5Etfw">@allen_ai</a> at the invitation of <a href="https://twitter.com/nlpnoah?ref_src=twsrc%5Etfw">@nlpnoah</a>. Super excited to present my upcoming <a href="https://twitter.com/hashtag/AAAI2020?src=hash&amp;ref_src=twsrc%5Etfw">#AAAI2020</a> work on combining text-based, world knowledge and unanswerable questions - to some of the best minds in QA and RC!</p>&mdash; Anna Rogers (@annargrs) <a href="https://twitter.com/annargrs/status/1204928552870612992?ref_src=twsrc%5Etfw">December 12, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                        <div id="embedLink">
+                        
+                        </div>
+                        <!--<blockquote class="twitter-tweet" style="margin: auto;"><p lang="en" dir="ltr">Today I&#39;m visiting <a href="https://twitter.com/allen_ai?ref_src=twsrc%5Etfw">@allen_ai</a> at the invitation of <a href="https://twitter.com/nlpnoah?ref_src=twsrc%5Etfw">@nlpnoah</a>. Super excited to present my upcoming <a href="https://twitter.com/hashtag/AAAI2020?src=hash&amp;ref_src=twsrc%5Etfw">#AAAI2020</a> work on combining text-based, world knowledge and unanswerable questions - to some of the best minds in QA and RC!</p>&mdash; Anna Rogers (@annargrs) <a href="https://twitter.com/annargrs/status/1204928552870612992?ref_src=twsrc%5Etfw">December 12, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>-->
 						<hr/>
 						<footer>
                             <button class="button" onclick="">💾 Later</button>
@@ -105,6 +108,7 @@
                             notification = snapshot.val()
                             $('#title').text(notification.title)
                             $('#message').text(notification.message)
+                            $('#embedLink').html(notification.embedLink)
                         }
                     });
                 }
