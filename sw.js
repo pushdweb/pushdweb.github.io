@@ -114,7 +114,7 @@ self.addEventListener('notificationclose', function(event) {
 self.addEventListener('message', event => { 
     if(event.data){
         console.log(event.data); // outputs {'hello':'world'}
-        event.data.close()
+        console.log(clients)
     }
 });
 
