@@ -112,7 +112,10 @@ self.addEventListener('notificationclose', function(event) {
 });
 
 self.addEventListener('message', event => { 
-  console.log(event.data); // outputs {'hello':'world'}
+    if(event.data){
+        console.log(event.data); // outputs {'hello':'world'}
+        event.data.close()
+    }
 });
 
 function update_engagement(event, engagement){

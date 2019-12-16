@@ -147,7 +147,7 @@
                         
                         console.log('reg active')
                         const serviceWorker = registration.active;
-                        serviceWorker.postMessage('Hi service worker');
+                        serviceWorker.postMessage(window);
                     }
                 }
                 
