@@ -229,6 +229,9 @@
                         return
                     }
                     
+                    if(notificationImage.includes('images/avatar.jpg'))
+                        notificationImage = ''
+                    
                     var pushUrl = "https://autoempushy.herokuapp.com/v1/push";
                     const now = new Date()
                     var notificationId = Math.round(now.getTime() / 1000) 

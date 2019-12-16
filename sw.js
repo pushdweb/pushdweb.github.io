@@ -4,36 +4,62 @@ self.addEventListener('push', function(event) {
 
     notification = event.data.json()
     const title = notification.title;
-    if(notification.image){
-        var notificationImage = 'data:image/jpeg;base64'+notification.image;
-    }
     
     // send request to update delivery metric for this notification..
     notification_data = { notification: { data: { notificationId: notification.id, userId: notification.userId } } }
     update_engagement(notification_data, 'delivered')
     
-    const options = {
-        body: notification.message,
-        badge: '/images/badge.png',
-        icon: notification.icon,
-        image: notificationImage,
-        data: {
-            notificationId: notification.id,
-            userId: notification.userId
-        },
-        actions: [
-            {
-              action: 'read-later',
-              title: '💾 Later',
-              icon: 'https://pushdweb.github.io/images/ic_later.png'
+    var options = {}
+    
+    if(notification.image && notificationImage!=''){
+        var notificationImage = 'data:image/jpeg;base64'+notification.image;
+        
+        options = {
+            body: notification.message,
+            badge: '/images/badge.png',
+            icon: notification.icon,
+            image: notificationImage,
+            data: {
+                notificationId: notification.id,
+                userId: notification.userId
             },
-            {
-              action: 'liked',
-              title: '👍 Like',
-              icon: 'https://pushdweb.github.io/images/ic_like.png'
-            }            
-        ]
-    };
+            actions: [
+                {
+                  action: 'read-later',
+                  title: '💾 Later',
+                  icon: 'https://pushdweb.github.io/images/ic_later.png'
+                },
+                {
+                  action: 'liked',
+                  title: '👍 Like',
+                  icon: 'https://pushdweb.github.io/images/ic_like.png'
+                }            
+            ]
+        };
+    }
+    else {
+        options = {
+            body: notification.message,
+            badge: '/images/badge.png',
+            icon: notification.icon,
+            data: {
+                notificationId: notification.id,
+                userId: notification.userId
+            },
+            actions: [
+                {
+                  action: 'read-later',
+                  title: '💾 Later',
+                  icon: 'https://pushdweb.github.io/images/ic_later.png'
+                },
+                {
+                  action: 'liked',
+                  title: '👍 Like',
+                  icon: 'https://pushdweb.github.io/images/ic_like.png'
+                }            
+            ]
+        };  
+    }
 
     event.waitUntil(self.registration.showNotification(title, options));
 });
