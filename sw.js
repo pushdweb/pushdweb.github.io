@@ -12,7 +12,6 @@ self.addEventListener('push', function(event) {
     var options = {}
     
     if(notification.imageURL!=''){
-        console.log(notification.imageURL)
         options = {
             body: notification.message,
             badge: '/images/badge.png',
@@ -95,9 +94,7 @@ self.addEventListener('notificationclick', function(event) {
 
 self.addEventListener('notificationclose', function(event) {
     console.log('closed!')
-    if (event.notification.data) {
-        update_engagement(event, 'dismissed')
-    }
+    update_engagement(event, 'dismissed')
 });
 
 function update_engagement(event, engagement){
