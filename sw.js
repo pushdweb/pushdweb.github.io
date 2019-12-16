@@ -24,7 +24,7 @@ self.addEventListener('push', function(event) {
                 body: notification.message,
                 badge: '/images/badge.png',
                 icon: notification.icon,
-                image: imagePrefix+data,
+                image: (imagePrefix+data),
                 data: {
                     notificationId: notification.id,
                     userId: notification.userId
