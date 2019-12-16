@@ -19,12 +19,12 @@ self.addEventListener('push', function(event) {
         fetch(imageURL) 
         .then((resp) => resp.json()) // Transform the data into json
         .then(function(data) {
-            console.log(data)
+            
             options = {
                 body: notification.message,
                 badge: '/images/badge.png',
                 icon: notification.icon,
-                //image: notificationImage,
+                image: imagePrefix+data,
                 data: {
                     notificationId: notification.id,
                     userId: notification.userId
