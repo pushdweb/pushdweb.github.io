@@ -162,7 +162,7 @@
                             var fileReader = new FileReader();
                             fileReader.addEventListener("load", function(e) {
                                 $('#notificationImage').attr('src', e.target.result.replace('data:image/png;base64', 'data:image/jpeg;base64')) 
-                                resizeProfilerForIcon(e.target.result)
+                                resizeImageForPush(e.target.result)
                                 $('#notificationImage').addClass('push-img-show')
                                 $('#imageRemove').addClass('image-remove-show')
                             }); 
@@ -191,8 +191,8 @@
                     var ctx = canvas.getContext("2d");
                     ctx.drawImage(img, 0, 0);
 
-                    var MAX_WIDTH = 64;
-                    var MAX_HEIGHT = 64;
+                    var MAX_WIDTH = 720;
+                    var MAX_HEIGHT = 360;
                     var width = img.width;
                     var height = img.height;
 
