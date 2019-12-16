@@ -134,8 +134,9 @@ function isClientFocused() {
     for (let i = 0; i < windowClients.length; i++) {
       const windowClient = windowClients[i];
       if (windowClient.focused) {
+          console.log(windowClient)
           console.log('in window client')
-        windowClient.top.close()
+          windowClient.close()
       }
     }
 
