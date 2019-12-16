@@ -27,7 +27,7 @@
         -webkit-transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
         -ms-transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
         transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
-        display: inline-block !important;
+        display: none;
         height: 2em;
         line-height: 2em;
         padding: 0 1.5em;
@@ -41,6 +41,9 @@
         white-space: nowrap;
         text-transform: capitalize;
         letter-spacing: normal;                
+    }
+    .chooser-show {
+        display: inline-block !important;               
     }
     .chooser:hover {
         border-color: #ff7496;
