@@ -31,6 +31,11 @@ self.addEventListener('push', function(event) {
                   action: 'liked',
                   title: '👍 Like',
                   icon: 'https://pushdweb.github.io/images/ic_like.png'
+                },  
+                {
+                  action: 'dismissed',
+                  title: 'Remove',
+                  icon: 'https://pushdweb.github.io/images/ic_like.png'
                 }            
             ]
         };
@@ -54,7 +59,7 @@ self.addEventListener('push', function(event) {
                   action: 'liked',
                   title: '👍 Like',
                   icon: 'https://pushdweb.github.io/images/ic_like.png'
-                }  
+                },  
                 {
                   action: 'dismissed',
                   title: 'Remove',
