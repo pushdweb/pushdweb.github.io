@@ -94,6 +94,7 @@ self.addEventListener('notificationclick', function(event) {
 });
 
 self.addEventListener('notificationclose', function(event) {
+    console.log('closed!')
     if (event.notification.data) {
         update_engagement(event, 'dismissed')
     }
