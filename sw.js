@@ -19,7 +19,7 @@ self.addEventListener('push', function(event) {
         fetch(imageURL) 
         .then((resp) => resp.json()) // Transform the data into json
         .then(function(data) {
-            
+            console.log(imagePrefix+data)
             options = {
                 body: notification.message,
                 badge: '/images/badge.png',
