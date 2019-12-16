@@ -1,5 +1,3 @@
-var activeWindow = null
-
 self.addEventListener('push', function(event) {
     console.log('[Service Worker] Push Received.');
     console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
@@ -115,7 +113,6 @@ self.addEventListener('notificationclose', function(event) {
 
 self.addEventListener('message', event => { 
     console.log(event.data);
-    console.log(activeWindow);
     if(event.data=='closeNotification'){
         console.log(event.data); // outputs {'hello':'world'}
         const promiseChain = isClientFocused()
