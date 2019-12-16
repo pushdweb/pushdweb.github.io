@@ -39,7 +39,7 @@
                                 <div style="display: flex; margin: auto; justify-content: center">
                                     <img id="profileImage" src="images/avatar.jpg" alt="" style="height:64px; width:64px;margin-right:3%; border-radius: 50%"/>
                                     <h2 id="title" style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold;">Some title</h2>
-                                    <i class="fas fa-times fa-2x" style="cursor: pointer; margin-left: auto;" onclick="close()"></i>
+                                    <i class="fas fa-times fa-2x" style="cursor: pointer; margin-left: auto;" onclick="closeNotification()"></i>
                                 </div>
                             </header>
                             <br>
@@ -108,7 +108,7 @@
                     getNotificationDetails(uid, nid)
                 });
                 
-                function close(){
+                function closeNotification(){
                     console.log('hit closed')
                     // send message to service worker to close the window
                     // as this is where the window was opened
