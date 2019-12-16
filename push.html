@@ -42,16 +42,22 @@
                                 </span>
                             </header>
                             <h2>Notification</h2>
-                            <form>
+                            <form id='pushForm'>
                                 <div class="fields">
                                     <div class="field">
-                                        <input type="text" name="title" id="title" placeholder="Title" style="text-transform: none"/>
+                                        <input type="text" name="title" id="title" placeholder="Title"/>
                                     </div>
                                     <div class="field">
-                                        <textarea name="message" id="message" placeholder="Content" rows="3" style="text-transform: none"></textarea>
+                                        <textarea name="message" id="message" placeholder="Message" rows="3"></textarea>
                                     </div>
+                                    <div style="display: flex; width: 100%; justify-content: center; margin-top: 10px;">
+                                        <img id="notificationImage" src="images/avatar.jpg" alt="" class="push-img"/>
+                                        <label id="imageChooser" for="imageFileInput" class="chooser" style="margin-top: auto; margin-bottom: auto;">Add Image</label>
+                                        <input id='imageFileInput' name="file" type="file" style="display: none;"/>
+                                    </div>
+                                    
                                     <div class="field">
-                                        <input type="text" name="embedLink" id="embedLink" placeholder="Embed post" style="text-transform: none"/>
+                                        <input type="text" name="embedLink" id="embedLink" placeholder="Embed social media post"/>
                                     </div>
                                 </div>
                             </form>
@@ -141,6 +147,25 @@
                                 $('#settingsButtons').attr('style', 'display: flex')
                             }
                             
+                            // Listen for form submit through ctrl + enter
+                            $('#pushForm').keydown(function(event) {
+                              if (event.ctrlKey && event.keyCode === 13) {
+                                pushNotification()
+                              }
+                            })
+                            
+                            // Setup image chooser
+                            var fileReader = new FileReader();
+                            fileReader.addEventListener("load", function(e) {
+                                $('#notificationImage').attr('src', e.target.result.replace('data:image/png;base64', 'data:image/jpeg;base64')) 
+                                resizeProfilerForIcon(e.target.result)
+                                $('#notificationImage').show()
+                            }); 
+
+                            $('#imageFileInput').change(function(e) { 
+                                fileReader.readAsDataURL( this.files[0] );
+                            });
+                            
                         } else {
                             // User is signed out.
                             window.location.replace("/index.html");
@@ -150,11 +175,59 @@
                     });
                 }
                 
+                function resizeProfilerForIcon(dataURL){
+                    // resize notificationImage
+                    var img = document.createElement("img");
+                    img.src = dataURL
+
+                    var canvas = document.createElement("canvas");
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+
+                    var MAX_WIDTH = 64;
+                    var MAX_HEIGHT = 64;
+                    var width = img.width;
+                    var height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+                    dataurl = canvas.toDataURL('image/jpeg', 0.7);
+                }
+                
                 function pushNotification(){
+                    $('#title').removeClass('input-invalid')
+                    $('#message').removeClass('input-invalid')
+                    
                     var title = $('#title').val()
                     var message = $('#message').val()
                     var embedLink = $('#embedLink').val()
                     var icon = localStorage.getItem('profileIcon');
+                    var notificationImage = $('#notificationImage').attr('src').replace('data:image/png;base64', '').replace('data:image/jpeg;base64', '')
+                    
+                    if(title==null || title==''){
+                        $('#title').addClass('input-invalid')
+                        Message.default.warn('A valid title is required')
+                        return
+                    }
+                        
+                    if(message==null || message==''){
+                        $('#message').addClass('input-invalid')
+                        Message.default.warn('A valid message is required')
+                        return
+                    }
                     
                     var pushUrl = "https://autoempushy.herokuapp.com/v1/push";
                     const now = new Date()
@@ -166,7 +239,8 @@
                         "title": title,
                         "message": message,
                         "embedLink": embedLink,
-                        "icon": icon
+                        "icon": icon,
+                        "image": notificationImage
                     })
 
                     $.ajax ({
@@ -178,23 +252,28 @@
                         crossDomain: true,
                         success: function(data) {
                             try{
+                                Message.default.success('Pushd successfully')
                                 if(localStorage.getItem('userId') && notificationId)
                                     getPushMetrics(localStorage.getItem('userId'), notificationId)
                             }
-                            catch(err){}
+                            catch(err){
+                                Message.default.warn('Problem updating metrics. Check back later. Your push was sent.')
+                            }
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                             
+                            Message.default.error('There was a problem pushing. Try again.')
                         } 
                     });
-                    
+
                     clearForm()
                 }
                 
                 function clearForm(){
-                    var title = $('#title').val('')
-                    var message = $('#message').val('')
-                    var message = $('#embedLink').val('')
+                    $('#title').val('')
+                    $('#message').val('')
+                    $('#title').val('')
+                    $('#embedLink').val('')
+                    $('#notificationImage').attr('src', '')
                     
                     $('#delivered').text(0)
                     $('#clicked').text(0)
@@ -248,6 +327,7 @@
                     }
                     Message.default.info(message)
                 }
+                
                 
                 /*function getLocation() {
                   if (navigator.geolocation) {

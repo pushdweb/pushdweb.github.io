@@ -4,6 +4,9 @@ self.addEventListener('push', function(event) {
 
     notification = event.data.json()
     const title = notification.title;
+    if(notification.image){
+        var notificationImage = 'data:image/jpeg;base64'+notification.image;
+    }
     
     // send request to update delivery metric for this notification..
     notification_data = { notification: { data: { notificationId: notification.id, userId: notification.userId } } }
@@ -13,7 +16,7 @@ self.addEventListener('push', function(event) {
         body: notification.message,
         badge: '/images/badge.png',
         icon: notification.icon,
-        //image: 'https://fraserkieran.com/images/gym-push.png',
+        image: notificationImage,
         data: {
             notificationId: notification.id,
             userId: notification.userId

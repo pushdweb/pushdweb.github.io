@@ -14,6 +14,48 @@
         background: transparent; /* make scrollbar transparent */
     }
 
+    .input-invalid {
+        border-color: #ff7496 !important;
+    }
+
+    .chooser {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        -ms-appearance: none;
+        appearance: none;
+        -moz-transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        -webkit-transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        -ms-transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        display: inline-block;
+        height: 2em;
+        line-height: 2em;
+        padding: 0 1.5em;
+        background-color: transparent;
+        border-radius: 4px;
+        border: solid 1px #c8cccf;
+        color: #414f57 !important;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        white-space: nowrap;
+        text-transform: capitalize;
+        letter-spacing: normal;                
+    }
+    .chooser:hover {
+        border-color: #ff7496;
+        color: #ff7496 !important;
+    }
+
+    .push-img {
+        height: 100px;
+        width: 100px;
+        position: relative;
+        display: none;
+        margin-right: 2.5%;
+        border-radius: 25%;
+    }
+
 	html, body, div, span, applet, object,
 	iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
 	pre, a, abbr, acronym, address, big, cite,
@@ -164,7 +206,7 @@
 		font-weight: 300;
 		line-height: 2;
 		letter-spacing: 0.1em;
-		text-transform: uppercase;
+		text-transform: none;
 	}
 
 		@media screen and (max-width: 1680px) {
@@ -303,6 +345,7 @@
 		}
 
 			form > .fields > .field {
+                padding-top: 10px !important;
 				-moz-flex-grow: 0;
 				-webkit-flex-grow: 0;
 				-ms-flex-grow: 0;
@@ -395,7 +438,7 @@
 		input[type="tel"]:focus,
 		select:focus,
 		textarea:focus {
-			border-color: #ff7496;
+			border-color: #83b6c5;
 		}
 
 	select {
