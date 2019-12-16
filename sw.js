@@ -13,36 +13,28 @@ self.addEventListener('push', function(event) {
     
     if(notification.imageURL!=''){
         console.log(notification.imageURL)
-        fetch(imageURL) 
-        .then((resp) => resp.json()) // Transform the data into json
-        .then(function(data) {
-            console.log(imagePrefix+data)
-            options = {
-                body: notification.message,
-                badge: '/images/badge.png',
-                icon: notification.icon,
-                image: notification.imageURL,
-                data: {
-                    notificationId: notification.id,
-                    userId: notification.userId
+        options = {
+            body: notification.message,
+            badge: '/images/badge.png',
+            icon: notification.icon,
+            image: notification.imageURL,
+            data: {
+                notificationId: notification.id,
+                userId: notification.userId
+            },
+            actions: [
+                {
+                  action: 'read-later',
+                  title: '💾 Later',
+                  icon: 'https://pushdweb.github.io/images/ic_later.png'
                 },
-                actions: [
-                    {
-                      action: 'read-later',
-                      title: '💾 Later',
-                      icon: 'https://pushdweb.github.io/images/ic_later.png'
-                    },
-                    {
-                      action: 'liked',
-                      title: '👍 Like',
-                      icon: 'https://pushdweb.github.io/images/ic_like.png'
-                    }            
-                ]
-            }; 
-        })
-        .catch(function(error) {
-            console.log('error getting image')
-        });
+                {
+                  action: 'liked',
+                  title: '👍 Like',
+                  icon: 'https://pushdweb.github.io/images/ic_like.png'
+                }            
+            ]
+        };
     }
     else {
         options = {
