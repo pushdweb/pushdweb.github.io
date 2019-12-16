@@ -113,42 +113,7 @@
                     // send message to service worker to close the window
                     // as this is where the window was opened
                     // https://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome/19768082#19768082
-                    //
-                    //const swPath = 'static/scripts/sw.js';
-
-                    /*function handleServiceWorkerActive(registration) {
-                        if (registration.active) {
-                            const serviceWorker = registration.active;
-                            const button = document.querySelector('#worker-message');
-                            button.addEventListener('click', ()  => {
-                                serviceWorker.postMessage('Hi service worker');
-                            });
-                        }
-                    }*/
-                    if ('serviceWorker' in navigator) {
-                      console.log('Service Worker is supported');
-
-                      navigator.serviceWorker.register('/sw.js', {scope: '/profile.html?p='+uid})
-                      .then(function(swReg) {
-                        console.log('Service Worker is registered', swReg);
-                        handleServiceWorkerActive(swReg)
-
-                      })
-                      .catch(function(error) {
-                        console.error('Service Worker Error', error);
-                      });
-                    } else {
-                      console.warn('Push messaging is not supported');
-                    }
-                }
-                
-                function handleServiceWorkerActive(registration) {
-                    if (registration.active) {
-                        
-                        console.log('reg active')
-                        const serviceWorker = registration.active;
-                        serviceWorker.postMessage('closeNotification');
-                    }
+                    window.close();
                 }
                 
                 function getNotificationDetails(userId, notificationId){

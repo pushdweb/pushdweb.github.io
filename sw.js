@@ -111,35 +111,12 @@ self.addEventListener('notificationclose', function(event) {
     update_engagement(event, 'dismissed')
 });
 
-self.addEventListener('message', event => { 
+/*self.addEventListener('message', event => { 
     console.log(event.data);
     if(event.data=='closeNotification'){
-        console.log(event.data); // outputs {'hello':'world'}
-        const promiseChain = isClientFocused()
-        event.waitUntil(promiseChain);
+        
     }
-});
-
-function isClientFocused() {
-  return clients.matchAll({
-    type: 'window',
-    includeUncontrolled: true
-  })
-  .then((windowClients) => {
-    let clientIsFocused = false;
-
-    for (let i = 0; i < windowClients.length; i++) {
-      const windowClient = windowClients[i];
-      if (windowClient.focused) {
-          console.log(windowClient)
-          console.log('in window client')
-          windowClient.close()
-      }
-    }
-
-    return clientIsFocused;
-  });
-}
+});*/
 
 function update_engagement(event, engagement){
 
