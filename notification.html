@@ -10,6 +10,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/modal.css" />
         <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.css" />
@@ -30,15 +31,18 @@
 
 				<!-- Main -->
                     <img src="images/pushd_white_no_caption_2.0.png" style="width: 200px; cursor: pointer;" onclick="window.location.replace('/login.html')"/>
+                
+                    <img id="notificationImage" class="notification-image" src="images/bg.jpg">
                     <div style="display: flex; justify-content: center; flex-direction: column; margin-top: 3%;">
-                        <section id="main" style="background-image: url(images/grey.png); background-repeat: repeat;width: 50vw; height: 100%; margin-bottom: 5%; margin-left: auto; margin-right: auto;">
+                        <section id="main" style="background-image: url(images/grey.png); background-repeat: repeat; width: 75vw; height: 100%; margin-bottom: 5%; margin-left: auto; margin-right: auto;">
                             <header>
                                 <div style="display: flex; margin: auto; justify-content: center">
-                                    <img id="profileImage" src="images/avatar.jpg" alt="" style="height:35px; width:35px;margin-right:3%;"/>
+                                    <img id="profileImage" src="images/avatar.jpg" alt="" style="height:64px; width:64px;margin-right:3%; border-radius: 50%"/>
                                     <h2 id="title" style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold;">Some title</h2>
                                     <span style="margin-left: auto; cursor: pointer;"><i class="fas fa-times fa-2x"></i></span>
                                 </div>
                             </header>
+                            <br>
                             <p id="message" style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold; margin-top: 3%; text-align: left;">The full body of the notification message</p>
                             <hr/>
                             <footer>
@@ -57,6 +61,14 @@
 					</footer>
 
 			</div>
+            <div id="imageModal" class="modal">
+                <span class="close">&times;</span>
+
+                <!-- Modal Content (The Image) -->
+                <div style="height: 100%;">
+                    <img class="modal-content" id="img01">
+                </div>
+            </div>
 
 		<!-- Scripts -->
             <script
@@ -105,12 +117,39 @@
                     var pushRef = firebase.database().ref('users/' + userId + '/pushd/' + notificationId).once('value').then(function(snapshot) {
                         if(snapshot!=null){
                             notification = snapshot.val()
+                            $('#profileImage').attr('src', notification.icon)
                             $('#title').text(notification.title)
                             $('#message').text(notification.message)
                             $('#embedLink').html(notification.embedLink)
+                            if(notification.imageURL!=''){
+                                $('#notificationImage').attr('src', notification.imageURL)
+                                $('#notificationImage').addClass('show')
+                                
+                                // Modal 
+                                // Get the modal
+                                var modal = document.getElementById("imageModal");
+
+                                // Get the image and insert it inside the modal - use its "alt" text as a caption
+                                var img = document.getElementById("notificationImage");
+                                var modalImg = document.getElementById("img01");
+                                img.onclick = function(){
+                                  modal.style.display = "block";
+                                  modalImg.src = this.src;
+                                }
+
+                                // Get the <span> element that closes the modal
+                                var span = document.getElementsByClassName("close")[0];
+
+                                // When the user clicks on <span> (x), close the modal
+                                span.onclick = function() {
+                                  modal.style.display = "none";
+                                }
+                            }
                         }
                     });
                 }
+                
+                
                 
 			</script>
 
