@@ -1,3 +1,5 @@
+var activeWindow = null
+
 self.addEventListener('push', function(event) {
     console.log('[Service Worker] Push Received.');
     console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
@@ -81,7 +83,10 @@ self.addEventListener('notificationclick', function(event) {
         console.log('Notification Click.');
         update_engagement(event, 'clicked')
         if (clients.openWindow) {
-            event.waitUntil(clients.openWindow('https://pushdweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId));
+            event.waitUntil(clients.openWindow('https://pushdweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId))
+            .then(function(windowClient){
+                activeWindow = windowClient
+            })
         }
         return;
     }
@@ -112,9 +117,9 @@ self.addEventListener('notificationclose', function(event) {
 });
 
 self.addEventListener('message', event => { 
-    if(event.data){
+    if(event.data=='closeNotification' && activeWindow!=null){
         console.log(event.data); // outputs {'hello':'world'}
-        console.log(clients)
+        activeWindow.top.close()
     }
 });
 
