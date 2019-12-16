@@ -39,15 +39,15 @@
                                 <div style="display: flex; margin: auto; justify-content: center">
                                     <img id="profileImage" src="images/avatar.jpg" alt="" style="height:64px; width:64px;margin-right:3%; border-radius: 50%"/>
                                     <h2 id="title" style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold;">Some title</h2>
-                                    <span style="margin-left: auto; cursor: pointer;"><i class="fas fa-times fa-2x"></i></span>
+                                    <i class="fas fa-times fa-2x" style="cursor: pointer; margin-left: auto;" onclick="window.close()"></i>
                                 </div>
                             </header>
                             <br>
                             <p id="message" style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold; margin-top: 3%; text-align: left;">The full body of the notification message</p>
                             <hr/>
                             <footer>
-                                <button class="button" onclick="">💾 Later</button>
-                                <button class="button" onclick="">👍 Like</button>
+                                <button class="button" onclick="update_engagement('later')">💾 Later</button>
+                                <button class="button" onclick="update_engagement('liked')">👍 Like</button>
                             </footer>
                         </section>
                         <div id="embedLink" style="display: flex; justify-content: center;"></div>
@@ -93,6 +93,8 @@
                 // Initialize Firebase
                 firebase.initializeApp(firebaseConfig);
                 var database = firebase.database();
+                var uid = null
+                var nid = null
                 
 				if ('addEventListener' in window) {
 					window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-preload\b/, ''); });
@@ -111,12 +113,46 @@
                     // as this is where the window was opened
                     // https://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome/19768082#19768082
                     //
+                    //const swPath = 'static/scripts/sw.js';
+
+                    /*function handleServiceWorkerActive(registration) {
+                        if (registration.active) {
+                            const serviceWorker = registration.active;
+                            const button = document.querySelector('#worker-message');
+                            button.addEventListener('click', ()  => {
+                                serviceWorker.postMessage('Hi service worker');
+                            });
+                        }
+                    }*/
+                    if ('serviceWorker' in navigator) {
+                      console.log('Service Worker is supported');
+
+                      navigator.serviceWorker.register('/sw.js', {scope: '/profile.html?p='+uid})
+                      .then(function(swReg) {
+                        console.log('Service Worker is registered', swReg);
+                        handleServiceWorkerActive(swReg)
+
+                      })
+                      .catch(function(error) {
+                        console.error('Service Worker Error', error);
+                      });
+                    } else {
+                      console.warn('Push messaging is not supported');
+                    }
+                }
+                
+                function handleServiceWorkerActive(registration) {
+                    if (registration.active) {
+                        const serviceWorker = registration.active;
+                        serviceWorker.postMessage('Hi service worker');
+                    }
                 }
                 
                 function getNotificationDetails(userId, notificationId){
                     var pushRef = firebase.database().ref('users/' + userId + '/pushd/' + notificationId).once('value').then(function(snapshot) {
                         if(snapshot!=null){
                             notification = snapshot.val()
+                            
                             $('#profileImage').attr('src', notification.icon)
                             $('#title').text(notification.title)
                             $('#message').text(notification.message)
@@ -147,6 +183,27 @@
                             }
                         }
                     });
+                }
+                
+                function update_engagement(engagement){
+                    if(uid!=null && nid!=null){
+                        
+                        var engageUrl = "https://autoempushy.herokuapp.com/v1/push-engage";
+
+                        var formData = JSON.stringify({
+                            "userId": uid,
+                            "notificationId": nid,
+                            "engagement": engagement
+                        })
+
+                        fetch(engageUrl, {
+                            method: 'post',
+                            headers: {
+                              "Content-type": "application/json; charset=utf-8"
+                            },
+                            body: formData
+                        })
+                    }
                 }
                 
                 

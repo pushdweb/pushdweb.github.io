@@ -236,8 +236,13 @@
                         return
                     }
                     
+                    if(embedLink!='')
+                        message = '📎 '+message
+                    
                     if(notificationImage.includes('images/avatar.jpg'))
                         notificationImage = ''
+                    else
+                        message = '📷 '+message
                     
                     var pushUrl = "https://autoempushy.herokuapp.com/v1/push";
                     //var pushUrl = "http://localhost:5000/v1/push"

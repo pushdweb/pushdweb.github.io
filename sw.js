@@ -111,6 +111,10 @@ self.addEventListener('notificationclose', function(event) {
     update_engagement(event, 'dismissed')
 });
 
+self.addEventListener('message', event => { 
+  console.log(event.data); // outputs {'hello':'world'}
+});
+
 function update_engagement(event, engagement){
 
     var engageUrl = "https://autoempushy.herokuapp.com/v1/push-engage";
