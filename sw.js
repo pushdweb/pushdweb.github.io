@@ -11,31 +11,40 @@ self.addEventListener('push', function(event) {
     
     var options = {}
     
-    if(notification.image && notificationImage!=''){
-        var notificationImage = 'data:image/jpeg;base64'+notification.image;
+    if(notification.isImage){
+        // get image
+        var imagePrefix = 'data:image/jpeg;base64'
+        var imageURL = 'https://autoempushy.firebaseio.com/users/'+notification.userId+'/pushd/'+notification.id+'/image.json'
         
-        options = {
-            body: notification.message,
-            badge: '/images/badge.png',
-            icon: notification.icon,
-            image: notificationImage,
-            data: {
-                notificationId: notification.id,
-                userId: notification.userId
-            },
-            actions: [
-                {
-                  action: 'read-later',
-                  title: '💾 Later',
-                  icon: 'https://pushdweb.github.io/images/ic_later.png'
+        fetch(imageURL) 
+        .then(function(data) {
+            console.log(data)
+            options = {
+                body: notification.message,
+                badge: '/images/badge.png',
+                icon: notification.icon,
+                //image: notificationImage,
+                data: {
+                    notificationId: notification.id,
+                    userId: notification.userId
                 },
-                {
-                  action: 'liked',
-                  title: '👍 Like',
-                  icon: 'https://pushdweb.github.io/images/ic_like.png'
-                }            
-            ]
-        };
+                actions: [
+                    {
+                      action: 'read-later',
+                      title: '💾 Later',
+                      icon: 'https://pushdweb.github.io/images/ic_later.png'
+                    },
+                    {
+                      action: 'liked',
+                      title: '👍 Like',
+                      icon: 'https://pushdweb.github.io/images/ic_like.png'
+                    }            
+                ]
+            };
+        })
+        .catch(function(error) {
+            console.log('error getting image')
+        });
     }
     else {
         options = {
@@ -109,15 +118,6 @@ function update_engagement(event, engagement){
         "notificationId": event.notification.data.notificationId,
         "engagement": engagement
     })
-
-    /*$.ajax ({
-        url: engageUrl,
-        type: "POST",
-        data: formData,
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        crossDomain: true 
-    });*/
     
     fetch(engageUrl, {
         method: 'post',

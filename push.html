@@ -159,7 +159,7 @@
                             fileReader.addEventListener("load", function(e) {
                                 $('#notificationImage').attr('src', e.target.result.replace('data:image/png;base64', 'data:image/jpeg;base64')) 
                                 resizeProfilerForIcon(e.target.result)
-                                $('#notificationImage').show()
+                                $('#notificationImage').addClass('push-img-show')
                             }); 
 
                             $('#imageFileInput').change(function(e) { 
@@ -277,6 +277,8 @@
                     $('#title').val('')
                     $('#embedLink').val('')
                     $('#notificationImage').attr('src', '')
+                    $('#notificationImage').removeClass('push-img-show')
+                    
                     
                     $('#delivered').text(0)
                     $('#clicked').text(0)
