@@ -85,6 +85,8 @@ self.addEventListener('notificationclick', function(event) {
         if (clients.openWindow) {
             clients.openWindow('https://pushdweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId)
             .then(function(windowClient){
+                console.log('the window client')
+                console.log(windowClient)
                 activeWindow = windowClient
                 return;
             })
@@ -118,6 +120,8 @@ self.addEventListener('notificationclose', function(event) {
 });
 
 self.addEventListener('message', event => { 
+    console.log(event.data);
+    console.log(activeWindow);
     if(event.data=='closeNotification' && activeWindow!=null){
         console.log(event.data); // outputs {'hello':'world'}
         activeWindow.top.close()
