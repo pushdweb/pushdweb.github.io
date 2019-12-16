@@ -164,13 +164,14 @@
                             "engagement": engagement
                         })
 
-                        fetch(engageUrl, {
+                        const response = await fetch(engageUrl, {
                             method: 'post',
                             headers: {
                               "Content-type": "application/json; charset=utf-8"
                             },
                             body: formData
                         })
+                        const json = await response.json();
                         closeNotification()
                     }
                 }
