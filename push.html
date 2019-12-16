@@ -222,7 +222,7 @@
                     var message = $('#message').val()
                     var embedLink = $('#embedLink').val()
                     var icon = localStorage.getItem('profileIcon');
-                    var notificationImage = $('#notificationImage').attr('src').replace('data:image/png;base64', '').replace('data:image/jpeg;base64', '')
+                    var notificationImage = $('#notificationImage').attr('src').replace('data:image/png;base64', 'data:image/jpeg;base64')
                     
                     if(title==null || title==''){
                         $('#title').addClass('input-invalid')

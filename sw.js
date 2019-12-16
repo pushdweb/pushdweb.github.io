@@ -11,11 +11,8 @@ self.addEventListener('push', function(event) {
     
     var options = {}
     
-    if(notification.isImage){
-        // get image
-        var imagePrefix = 'data:image/jpeg;base64'
-        var imageURL = 'https://autoempushy.firebaseio.com/users/'+notification.userId+'/pushd/'+notification.id+'/image.json'
-        
+    if(notification.imageURL!=''){
+        console.log(notification.imageURL)
         fetch(imageURL) 
         .then((resp) => resp.json()) // Transform the data into json
         .then(function(data) {
@@ -24,7 +21,7 @@ self.addEventListener('push', function(event) {
                 body: notification.message,
                 badge: '/images/badge.png',
                 icon: notification.icon,
-                image: (imagePrefix+data),
+                image: notification.imageURL,
                 data: {
                     notificationId: notification.id,
                     userId: notification.userId
