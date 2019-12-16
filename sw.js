@@ -54,7 +54,12 @@ self.addEventListener('push', function(event) {
                   action: 'liked',
                   title: '👍 Like',
                   icon: 'https://pushdweb.github.io/images/ic_like.png'
-                }            
+                }  
+                {
+                  action: 'dismissed',
+                  title: 'Remove',
+                  icon: 'https://pushdweb.github.io/images/ic_like.png'
+                }
             ]
         };  
     }
@@ -84,6 +89,10 @@ self.addEventListener('notificationclick', function(event) {
     case 'liked':
         console.log('Update like metrics for this notification');
         update_engagement(event, 'liked')
+        break;
+    case 'dismissed':
+        console.log('Update dismiss metrics for this notification');
+        update_engagement(event, 'dismissed')
         break;
     default:
         console.log(`Unknown action clicked: '${event.action}'`);
