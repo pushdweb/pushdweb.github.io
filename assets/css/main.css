@@ -27,7 +27,7 @@
         -webkit-transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
         -ms-transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
         transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
-        display: inline-block;
+        display: inline-block !important;
         height: 2em;
         line-height: 2em;
         padding: 0 1.5em;
@@ -47,6 +47,39 @@
         color: #ff7496 !important;
     }
 
+    .image-remove {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        -ms-appearance: none;
+        appearance: none;
+        -moz-transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        -webkit-transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        -ms-transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        display: none !important;
+        height: 2em;
+        line-height: 2em;
+        padding: 0 1.5em;
+        background-color: transparent;
+        border-radius: 4px;
+        border: solid 1px #c8cccf;
+        color: #414f57 !important;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        white-space: nowrap;
+        text-transform: capitalize;
+        letter-spacing: normal;                
+    }
+    .image-remove:hover {
+        border-color: #ff7496;
+        color: #ff7496 !important;
+    }
+
+    .image-remove-show {
+        display: inline-block !important;
+    }
+
     .push-img {
         height: 100px;
         width: 100px;
@@ -57,7 +90,7 @@
     }
 
     .push-img-show {
-        display: block;
+        display: block!important;
     }
 
 	html, body, div, span, applet, object,

@@ -17,6 +17,7 @@ self.addEventListener('push', function(event) {
         var imageURL = 'https://autoempushy.firebaseio.com/users/'+notification.userId+'/pushd/'+notification.id+'/image.json'
         
         fetch(imageURL) 
+        .then((resp) => resp.json()) // Transform the data into json
         .then(function(data) {
             console.log(data)
             options = {
@@ -40,7 +41,7 @@ self.addEventListener('push', function(event) {
                       icon: 'https://pushdweb.github.io/images/ic_like.png'
                     }            
                 ]
-            };
+            }; 
         })
         .catch(function(error) {
             console.log('error getting image')

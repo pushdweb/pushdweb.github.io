@@ -52,7 +52,10 @@
                                     </div>
                                     <div style="display: flex; width: 100%; justify-content: center; margin-top: 10px;">
                                         <img id="notificationImage" src="images/avatar.jpg" alt="" class="push-img"/>
-                                        <label id="imageChooser" for="imageFileInput" class="chooser" style="margin-top: auto; margin-bottom: auto;">Add Image</label>
+                                        <div style="display: flex; flex-direction: column">
+                                            <label id="imageChooser" for="imageFileInput" class="chooser" style="margin-top: auto; margin-bottom: auto;">Add Image</label>
+                                            <label id='imageRemove' class="image-remove" style="margin-top: auto; margin-bottom: auto;" onclick="removeImage()">Remove Image</label>
+                                        </div>
                                         <input id='imageFileInput' name="file" type="file" style="display: none;"/>
                                     </div>
                                     
@@ -160,10 +163,13 @@
                                 $('#notificationImage').attr('src', e.target.result.replace('data:image/png;base64', 'data:image/jpeg;base64')) 
                                 resizeProfilerForIcon(e.target.result)
                                 $('#notificationImage').addClass('push-img-show')
+                                $('#imageRemove').addClass('image-remove-show')
                             }); 
 
                             $('#imageFileInput').change(function(e) { 
                                 fileReader.readAsDataURL( this.files[0] );
+                                $('#notificationImage').addClass('push-img-show')
+                                $('#imageRemove').addClass('image-remove-show')
                             });
                             
                         } else {
@@ -278,6 +284,7 @@
                     $('#embedLink').val('')
                     $('#notificationImage').attr('src', '')
                     $('#notificationImage').removeClass('push-img-show')
+                    $('#imageRemove').removeClass('image-remove-show')
                     
                     
                     $('#delivered').text(0)
@@ -285,6 +292,12 @@
                     $('#liked').text(0)
                     $('#later').text(0)
                     $('#dismissed').text(0)
+                }
+                
+                function removeImage(){
+                    $('#notificationImage').attr('src', 'images/avatar.jpg')
+                    $('#notificationImage').removeClass('push-img-show')
+                    $('#imageRemove').removeClass('image-remove-show')
                 }
                 
                 function getPushMetrics(userId, notificationId){
