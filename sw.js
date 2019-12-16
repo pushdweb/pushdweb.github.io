@@ -83,13 +83,7 @@ self.addEventListener('notificationclick', function(event) {
         console.log('Notification Click.');
         update_engagement(event, 'clicked')
         if (clients.openWindow) {
-            event.waitUnitl(clients.openWindow('https://pushdweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId)
-            .then(function(windowClient){
-                console.log('the window client')
-                console.log(windowClient)
-                activeWindow = windowClient
-                return;
-            }))
+            event.waitUnitl(clients.openWindow('https://pushdweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId))
         }
         return;
     }
@@ -122,11 +116,32 @@ self.addEventListener('notificationclose', function(event) {
 self.addEventListener('message', event => { 
     console.log(event.data);
     console.log(activeWindow);
-    if(event.data=='closeNotification' && activeWindow!=null){
+    if(event.data=='closeNotification'){
         console.log(event.data); // outputs {'hello':'world'}
-        activeWindow.top.close()
+        const promiseChain = isClientFocused()
+        event.waitUntil(promiseChain);
     }
 });
+
+function isClientFocused() {
+  return clients.matchAll({
+    type: 'window',
+    includeUncontrolled: true
+  })
+  .then((windowClients) => {
+    let clientIsFocused = false;
+
+    for (let i = 0; i < windowClients.length; i++) {
+      const windowClient = windowClients[i];
+      if (windowClient.focused) {
+          console.log('in window client')
+        windowClient.top.close()
+      }
+    }
+
+    return clientIsFocused;
+  });
+}
 
 function update_engagement(event, engagement){
 
