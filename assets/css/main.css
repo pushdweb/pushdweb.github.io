@@ -39,6 +39,10 @@
         display: block !important;
     }
 
+    .hide {
+        display: none !important;
+    }
+
     .chooser {
         -moz-appearance: none;
         -webkit-appearance: none;
