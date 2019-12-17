@@ -176,34 +176,39 @@
                         if(snapshot!=null){
                             notification = snapshot.val()
                             
-                            $('#profileImage').attr('src', notification.icon)
-                            $('#title').text(notification.title)
-                            $('#message').text(notification.message)
-                            $('#embedLink').html(notification.embedLink)
-                            if(notification.imageURL!='' && notification.imageURL!=null){
-                                console.log(notification.imageURL)
-                                $('#notificationImage').attr('src', notification.imageURL)
-                                $('#notificationImage').addClass('show')
-                                
-                                // Modal 
-                                // Get the modal
-                                var modal = document.getElementById("imageModal");
+                            if(notification.deleted==null){
+                                $('#profileImage').attr('src', notification.icon)
+                                $('#title').text(notification.title)
+                                $('#message').text(notification.message)
+                                $('#embedLink').html(notification.embedLink)
+                                if(notification.imageURL!='' && notification.imageURL!=null){
+                                    console.log(notification.imageURL)
+                                    $('#notificationImage').attr('src', notification.imageURL)
+                                    $('#notificationImage').addClass('show')
 
-                                // Get the image and insert it inside the modal - use its "alt" text as a caption
-                                var img = document.getElementById("notificationImage");
-                                var modalImg = document.getElementById("img01");
-                                img.onclick = function(){
-                                  modal.style.display = "block";
-                                  modalImg.src = this.src;
+                                    // Modal 
+                                    // Get the modal
+                                    var modal = document.getElementById("imageModal");
+
+                                    // Get the image and insert it inside the modal - use its "alt" text as a caption
+                                    var img = document.getElementById("notificationImage");
+                                    var modalImg = document.getElementById("img01");
+                                    img.onclick = function(){
+                                      modal.style.display = "block";
+                                      modalImg.src = this.src;
+                                    }
+
+                                    // Get the <span> element that closes the modal
+                                    var span = document.getElementsByClassName("close")[0];
+
+                                    // When the user clicks on <span> (x), close the modal
+                                    span.onclick = function() {
+                                      modal.style.display = "none";
+                                    }
                                 }
-
-                                // Get the <span> element that closes the modal
-                                var span = document.getElementsByClassName("close")[0];
-
-                                // When the user clicks on <span> (x), close the modal
-                                span.onclick = function() {
-                                  modal.style.display = "none";
-                                }
+                            }
+                            else{
+                                $('section').html('<h2 style="font-weight: 600">Oops! This notification has been deleted by the owner :(</h2>')
                             }
                         }
                     });
