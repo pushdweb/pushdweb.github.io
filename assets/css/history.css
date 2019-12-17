@@ -7,16 +7,120 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
-/* Icon (alt) */
-    .vanilla-antd-message {
-        position: fixed;
-        top: 10vh;
-        left: 10vw;
-        right: 10vw;
-        z-index: 9999;
-        text-transform: none;
-        text-align: center;
+.vanilla-antd-message {
+    position: fixed;
+    top: 10vh;
+    left: 10vw;
+    right: 10vw;
+    z-index: 9999;
+    text-transform: none;
+    text-align: center;
+}
+
+.loader {
+  border: 5px solid white; /* Light grey */
+  border-top: 5px solid #ff7496; 
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-top: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.feed {
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+@media only screen and (max-width: 480px) {
+    .feed-card {
+        background-image: url(../../images/grey.png);
+        background-repeat: repeat;
+        margin-bottom: 5px;
+        margin-left: auto;
+        margin-right: auto;
+        padding:15px;
+        width: 75vw;
+        border-radius: 25px;
     }
+    
+    .notification-message {
+        margin-top:auto;
+        margin-bottom: auto;
+        text-transform: none;
+        font-weight: bold;
+        margin-top: 5px;
+        text-align: left;
+        padding-left: 40px;
+        cursor: pointer;
+    }
+}
+
+@media only screen and (min-width: 480px) {
+    .feed-card {
+        background-image: url(../../images/grey.png);
+        background-repeat: repeat;
+        margin-bottom: 5px;
+        margin-left: auto;
+        margin-right: auto;
+        padding:15px;
+        width: 50vw;
+        border-radius: 25px;
+        cursor: pointer;
+    }
+    
+    .notification-message {
+        margin-top:auto;
+        margin-bottom: auto;
+        text-transform: none;
+        font-weight: bold;
+        margin-top: 5px;
+        text-align: left;
+        padding-left: 57px;
+        cursor: pointer;
+    }
+}
+
+.notification-header {
+    display: flex;
+    margin: auto;
+    justify-content: center
+}
+
+.notification-icon {
+    height:32px;
+    width:32px;
+    margin-right:3%;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.notification-title {
+    margin-top:auto;
+    margin-bottom: auto;
+    text-transform: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.notification-close {
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.deleting {
+    background: #ff7496!important;
+}
+
+/* Icon (alt) */
+
     ::-webkit-scrollbar {
         width: 0px;
         background: transparent; /* make scrollbar transparent */
@@ -28,10 +132,10 @@
 
     .notification-image {
         width: 50%; 
-        margin-top: auto;
-        margin-bottom: auto;
-        padding: 30px;
+        margin-top: 2%; 
 		border: none;
+        margin-left: auto;
+        margin-right: auto;
         display: none;
     }
 
@@ -1170,6 +1274,7 @@
 					border-left: 0;
 				}
 
+    
 /* Wrapper */
 
 	#wrapper {

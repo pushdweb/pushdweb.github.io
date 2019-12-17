@@ -11,6 +11,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="assets/css/modal.css" />
+		<link rel="stylesheet" href="assets/css/ant-toast.css" />
         <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.css" />
@@ -32,25 +33,44 @@
 				<!-- Main -->
                     <img src="images/pushd_white_no_caption_2.0.png" style="width: 200px; cursor: pointer;" onclick="window.location.replace('/login.html')"/>
                 
-                    <img id="notificationImage" class="notification-image" src="images/bg.jpg">
-                    <div style="display: flex; justify-content: center; flex-direction: column; margin-top: 3%;">
-                        <section id="main" style="background-image: url(images/grey.png); background-repeat: repeat; width: 75vw; height: 100%; margin-bottom: 5%; margin-left: auto; margin-right: auto;">
+                    <div>
+                        <div id="metricIcons" class="metricButtons">
+                            <img src="images/ic_delivered.png" class="push-metric-ic less-padding" onclick="metricClicked('delivered')">
+                            <img src="images/ic_clicked.png" class="push-metric-ic less-padding" onclick="metricClicked('clicked')">
+                            <img src="images/ic_like.png" class="push-metric-ic less-padding" onclick="metricClicked('liked')">
+                            <img src="images/ic_later.png" class="push-metric-ic less-padding" onclick="metricClicked('later')">
+                            <img src="images/ic_dismissed.png" class="push-metric-ic less-padding" onclick="metricClicked('dismissed')">
+                        </div>
+                        <div id="metricValues" class="metricButtons">
+                            <span id="delivered" class="push-metric less-padding">0</span>
+                            <span id="clicked" class="push-metric less-padding">0</span>
+                            <span id="liked" class="push-metric less-padding">0</span>
+                            <span id="later" class="push-metric less-padding">0</span>
+                            <span id="dismissed" class="push-metric less-padding">0</span>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: center; flex-direction: column; margin-top: 10px">
+                        <section id="main" style="background-image: url(images/grey.png); background-repeat: repeat; width: 75vw; height: 100%; margin-bottom: 5px; margin-left: auto; margin-right: auto;">
                             <header>
                                 <div style="display: flex; margin: auto; justify-content: center">
                                     <img id="profileImage" src="images/avatar.jpg" alt="" style="height:64px; width:64px;margin-right:3%; border-radius: 50%"/>
                                     <h2 id="title" style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold;">Some title</h2>
-                                    <i class="fas fa-times fa-2x" style="cursor: pointer; margin-left: auto;" onclick="closeNotification()"></i>
+                                    <i id="close" class="fas fa-times fa-2x" style="cursor: pointer; margin-left: auto;"></i>
                                 </div>
                             </header>
                             <br>
                             <p id="message" style="margin-top:auto; margin-bottom: auto; text-transform: none; font-weight: bold; margin-top: 3%; text-align: left;">The full body of the notification message</p>
                             <hr/>
                             <footer>
-                                <button class="button" onclick="update_engagement('later')">💾 Later</button>
-                                <button class="button" onclick="update_engagement('liked')">👍 Like</button>
+                                <button id="laterButton" style="display: none;" class="button" onclick="update_engagement('later')">💾 Later</button>
+                                <button id="likeButton" style="display: none;" class="button" onclick="update_engagement('liked')">👍 Like</button>
                             </footer>
                         </section>
-                        <div id="embedLink" style="display: flex; justify-content: center;"></div>
+                        <div style="display: flex; flex-direction: row; justify-content: center;">
+                            <div id="embedLink" style="display: block; margin-top: auto; margin-bottom: auto;"></div>
+                            <img id="notificationImage" class="notification-image" src="images/bg.jpg">
+                        </div>
                     </div>
 
 				<!-- Footer -->
@@ -75,7 +95,10 @@
               src="https://code.jquery.com/jquery-3.4.1.min.js"
               integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
               crossorigin="anonymous"></script>
+            <!--https://github.com/MinimalistYing/vanilla-antd-message-->
+            <script src="assets/js/ant-toast.js"></script>
             <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
             <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
         
 			<script>
@@ -105,15 +128,47 @@
                     const params = new URLSearchParams(window.location.search);  
                     uid = params.get("p");
                     nid = params.get("n");
-                    getNotificationDetails(uid, nid)
+                    if(uid!=null && nid!=null)
+                        getNotificationDetails(uid, nid)
+                    else
+                        $('section').html('<h2 style="font-weight: 600">Oops! Notification not found</h2>')
+                    
+                    firebase.auth().onAuthStateChanged(function(user) {
+                        if (user) {
+                            if(uid == user.uid){
+                                metricsMode()
+                            }
+                            else {
+                                engagementMode()
+                            }
+                        }
+                        else {
+                            engagementMode()
+                        }
+                    }, function(error) {
+                        console.log(error);
+                    });
                 });
                 
-                function closeNotification(){
-                    console.log('hit closed')
-                    // send message to service worker to close the window
-                    // as this is where the window was opened
-                    // https://stackoverflow.com/questions/19761241/window-close-and-self-close-do-not-close-the-window-in-chrome/19768082#19768082
+                function engagementMode(){
+                    $('#laterButton').show()
+                    $('#likeButton').show()
+                    $('#close').attr('onclick', 'closeNotificationEngagementMode()')
+                }
+                
+                function metricsMode(){
+                    $('#metricIcons').attr('style', 'display: flex; margin-top: 20px')
+                    $('#metricValues').attr('style', 'display: flex;')
+                    $('#close').attr('onclick', 'closeNotificationMetricsMode()')
+                    getPushMetrics(uid, nid)
+                }
+                
+                function closeNotificationEngagementMode(){
                     window.close();
+                }
+                
+                function closeNotificationMetricsMode(){
+                    window.history.back()
                 }
                 
                 function getNotificationDetails(userId, notificationId){
@@ -125,7 +180,8 @@
                             $('#title').text(notification.title)
                             $('#message').text(notification.message)
                             $('#embedLink').html(notification.embedLink)
-                            if(notification.imageURL!=''){
+                            if(notification.imageURL!='' && notification.imageURL!=null){
+                                console.log(notification.imageURL)
                                 $('#notificationImage').attr('src', notification.imageURL)
                                 $('#notificationImage').addClass('show')
                                 
@@ -176,7 +232,50 @@
                     }
                 }
                 
+                function metricClicked(metric){
+                    message = ''
+                    switch(metric){
+                        case 'delivered':
+                            message = 'The number of people your notification was delivered to'
+                            break
+                        case 'clicked':
+                            message = 'The number of people who opened your notification to view it in more detail'
+                            break
+                        case 'liked':
+                            message = 'The number of people who liked your notification'
+                            break
+                        case 'later':
+                            message = 'The number of people who decided to save your notification for later'
+                            break
+                        case 'dismissed':
+                            message = 'The number of people who dismissed your notification'
+                            break
+                    }
+                    Message.default.info(message)
+                }
                 
+                function getPushMetrics(userId, notificationId){
+                    var pushRef = firebase.database().ref('users/' + userId + '/pushd/' + notificationId);
+                    pushRef.on('value', function(snapshot) {
+                        if(snapshot!=null){
+                            if(snapshot.val().delivered){
+                                $('#delivered').text(snapshot.child('delivered').numChildren())
+                            }
+                            if(snapshot.val().clicked){
+                                $('#clicked').text(snapshot.child('clicked').numChildren())
+                            }
+                            if(snapshot.val().liked){
+                                $('#liked').text(snapshot.child('liked').numChildren())
+                            }
+                            if(snapshot.val().later){
+                                $('#later').text(snapshot.child('later').numChildren())
+                            }
+                            if(snapshot.val().dismissed){
+                                $('#dismissed').text(snapshot.child('dismissed').numChildren())
+                            }
+                        }
+                    });
+                }
                 
 			</script>
 

@@ -1,0 +1,173 @@
+<!DOCTYPE HTML>
+<!--
+	Identity by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>pushd</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/history.css" />
+        <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
+		<link rel="stylesheet" href="assets/css/ant-toast.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+        
+        <style>
+            .edit-icon {
+                opacity: 40%;
+                color: #cc796b;
+                cursor: pointer;
+                float: right;
+                margin: auto;
+                line-height: 1.5;
+                font-style: oblique;
+                font-size: x-large;
+            }
+            
+            .field {
+                margin-top: 2%;  
+                margin-bottom: 2%; 
+            }
+            
+            .hidden {
+                display: none!important;
+            }
+        </style>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+                    <img src="images/pushd_white_no_caption_2.0.png" style="width: 200px; cursor: pointer;" onclick="window.location.replace('/login.html')"/>
+                    
+                    <div class="feed">
+                        <div class="loader"></div>
+                    </div>
+                    
+
+				<!-- Footer -->
+					<footer id="footer">
+						<ul class="copyright">
+							<li>&copy; Pushd</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                            <li id="signInLink"><a href="/index.html">Sign In</a></li>
+						</ul>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+        <script
+          src="https://code.jquery.com/jquery-3.4.1.min.js"
+          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+          crossorigin="anonymous"></script>
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.4/jsrender.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+        <script src="assets/js/ant-toast.js"></script>
+        
+            <script type="application/javascript" src="assets/js/test.js"></script>
+			<script>
+                
+                var notificationString = '<section id="{{:id}}" class="feed-card">'+
+                                            '<header>'+
+                                                '<div class="notification-header">'+
+                                                    '<img id="profileImage" src="{{:icon}}" alt="" class="notification-icon" onclick="viewNotification(\'{{:userId}}\', \'{{:id}}\')"/>'+
+                                                    '<h2 id="title" class="notification-title" onclick="viewNotification(\'{{:userId}}\', \'{{:id}}\')">{{:title}}</h2>'+
+                                                    '<i id="close" class="fas fa-trash-alt fa notification-close" onclick="deleteNotification(\'{{:userId}}\', \'{{:id}}\')"></i>'+
+                                               '</div>'+
+                                            '</header>'+
+                                            '<p id="message" class="notification-message" onclick="viewNotification(\'{{:userId}}\', \'{{:id}}\')">{{:message}}</p>'+
+                                        '</section>'
+                var notificationTemplate = $.templates(notificationString);
+                                
+                // Your web app's Firebase configuration
+                var firebaseConfig = {
+                    apiKey: "AIzaSyBJpTtm__4p2TRQnBs71PG5u0odryHPxqs",
+                    authDomain: "autoempushy.firebaseapp.com",
+                    databaseURL: "https://autoempushy.firebaseio.com",
+                    projectId: "autoempushy",
+                    storageBucket: "autoempushy.appspot.com",
+                    messagingSenderId: "787581605206",
+                    appId: "1:787581605206:web:5cc765820a98b8008d32f7",
+                    measurementId: "G-NWVD0JG36T"
+                };
+                // Initialize Firebase
+                firebase.initializeApp(firebaseConfig);
+                var db = firebase.database();
+                
+				if ('addEventListener' in window) {
+					window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-preload\b/, ''); });
+					document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
+				}
+                
+                window.addEventListener('load', function() {
+                    initApp();
+                });
+                
+                
+                
+                function initApp() {    
+                    firebase.auth().onAuthStateChanged(function(user) {
+                        if (user) {
+                            var uid = user.uid;
+                            getFeed(uid)
+                        }
+                        else {
+                            
+                        }
+                    }, function(error) {
+                      console.log(error);
+                    });
+                }
+                
+                function getFeed(userId){
+                    var pushRef = firebase.database().ref('users/' + userId + '/pushd/')/*.limitToLast(5)*/
+                    .once('value')
+                    .then(function(snapshot) {
+                        
+                        notificationList = []
+                        if(snapshot.val()!=null){
+                            snapshot.forEach((notification)=> {
+                                notificationList.push(notification.val())
+                            });
+                        }
+                        var html = notificationTemplate.render(notificationList.reverse());
+                        $( ".feed" ).empty()
+                        $( ".feed" ).append(html)
+                    });
+                }
+                
+                function viewNotification(uid, nid){
+                    window.location.href = '/notification.html?p='+uid+'&n='+nid
+                }
+                
+                function deleteNotification(uid, nid) {
+                    // send message to server to remove image
+                    $('#'+nid).addClass('deleting')
+                    firebase.database().ref('users/' + uid + '/pushd/'+nid).remove(function (error) {
+                        if (!error) {
+                            Message.default.success('Notification deleted')
+                            getFeed(uid)
+                        }
+                        else{
+                            Message.default.warn('Oops! Could not delete. Try again.')
+                            $('#'+nid).removeClass('deleting')
+                        }
+                    })
+                }
+                
+                
+                
+                
+			</script>
+
+	</body>
+</html>
