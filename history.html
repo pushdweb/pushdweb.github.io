@@ -152,7 +152,14 @@
                 function deleteNotification(uid, nid) {
                     // send message to server to remove image
                     $('#'+nid).addClass('deleting')
-                    firebase.database().ref('users/' + uid + '/pushd/'+nid).remove(function (error) {
+                    firebase.database().ref('users/' + uid + '/pushd/'+nid).update({
+                        title: null,
+                        message: null,
+                        icon: null,
+                        embedLink: null,
+                        imageURL: null,
+                        
+                    } , function (error) {
                         if (!error) {
                             Message.default.success('Notification deleted')
                             getFeed(uid)
