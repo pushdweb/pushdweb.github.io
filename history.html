@@ -136,7 +136,8 @@
                         notificationList = []
                         if(snapshot.val()!=null){
                             snapshot.forEach((notification)=> {
-                                notificationList.push(notification.val())
+                                if(notification.val().deleted==null)
+                                    notificationList.push(notification.val())
                             });
                         }
                         var html = notificationTemplate.render(notificationList.reverse());
@@ -158,6 +159,7 @@
                         icon: null,
                         embedLink: null,
                         imageURL: null,
+                        deleted: true
                         
                     } , function (error) {
                         if (!error) {
