@@ -81,7 +81,7 @@ self.addEventListener('notificationclick', function(event) {
         console.log('Notification Click.');
         update_engagement(event, 'clicked')
         if (clients.openWindow) {
-            event.waitUnitl(clients.openWindow('https://pushdweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId))
+            event.waitUntil(clients.openWindow('https://pushdweb.github.io/notification.html?p='+event.notification.data.userId+'&n='+event.notification.data.notificationId))
         }
         return;
     }
