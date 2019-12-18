@@ -23,15 +23,13 @@
     }
     
     .metric-card {
-        background-image: url(images/grey.png);
-        background-repeat: repeat;
-        width: 100%;
+        background-image: url(../../images/grey.png)!important;
+        background-repeat: repeat!important;
         height: 100%;
         margin-bottom: auto;
         margin-top: auto;
         margin-left: 5px;
         margin-right: 5px;
-        padding: 5px
     }
 }
 
@@ -52,16 +50,15 @@
     }
     
     .metric-card {
-        background-image: url(images/grey.png);
-        background-repeat: repeat;
-        width: 100%;
+        background-image: url(../../images/grey.png)!important;
+        background-repeat: repeat!important;
         height: 100%;
         margin-bottom: auto;
         margin-top: auto;
         margin-left: auto;
         margin-right: auto;
         margin: 5px;
-        padding: 5px
+        padding: 20px!important;
     }
 }
 
