@@ -250,6 +250,13 @@
                                             $('#facebookField').hide()
                                         }
                                         
+                                        if(data['subURL']!=''){
+                                            $('#toshare').html(data['subURL'])
+                                            $('#toshare').show()
+                                            $('#toShareLine').show()
+                                            $('#toshareIcon').show()
+                                        }
+                                        
                                     }
                                 }
                                 catch(err){}
@@ -304,8 +311,7 @@
                             var uid = user.uid;
                             localStorage.setItem('userId', uid);
                             
-                            var shareableLink = (window.location.origin+'/profile.html?p='+uid).replace('http://', '').replace('https://', '')
-                            $('#toshare').html(shareableLink)
+                            
                             $('#logoutButton').removeClass('hidden')
                             $('#editButton').removeClass('hidden')
                             $('#pushButton').removeClass('hidden')
