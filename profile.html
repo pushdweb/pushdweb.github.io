@@ -65,7 +65,7 @@
                             </header>
                             <p id="toShareLine" style="letter-spacing: normal; font-family: inherit; text-transform: none;  margin-bottom: 1%; display: none;">Your unique Pushd link to share:</p>
                             <i id='toshareIcon' onclick="copyShareLink()" class="far fa-clipboard" style="cursor: pointer; display: none;"></i>
-                            <small id='toshare' style="font-size: x-small; letter-spacing: normal; font-family: inherit; text-transform: none;"></small>
+                            <small id='toshare' style="font-size: small; font-weight: 600; letter-spacing: normal; font-family: inherit; text-transform: none;"></small>
                             <!--
                             <hr />
                             <h2>Extra Stuff!</h2>
@@ -250,7 +250,7 @@
                                             $('#facebookField').hide()
                                         }
                                         
-                                        if(data['snapshot']['subURL']!=''){
+                                        if(data['snapshot']['subURL']!='' && localStorage.getItem('userId')){
                                             $('#toshare').html(data['snapshot']['subURL'])
                                             $('#toshare').show()
                                             $('#toShareLine').show()
