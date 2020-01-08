@@ -1060,6 +1060,14 @@
 		}
 
 /* Cookies */
+.dark.cc_dialog {
+    background-color: transparent!important;
+    color: #fff;
+}
+.dark.cc_dialog .cc_dialog_text {
+    color: #fff;
+    letter-spacing: 0px !important;
+}
 .dark.cc_dialog button.cc_b_cp {
     background-color: #eaeaea !important;
     color: #111 !important;
