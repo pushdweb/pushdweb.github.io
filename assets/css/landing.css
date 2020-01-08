@@ -982,6 +982,7 @@
 		color: rgba(255, 255, 255, 0.75);
 		cursor: default;
 		text-align: center;
+        text-transform: none;
 	}
 
 		#footer .copyright {
