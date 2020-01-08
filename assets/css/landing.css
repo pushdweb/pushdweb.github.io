@@ -1063,10 +1063,14 @@
 .dark.cc_dialog button.cc_b_cp {
     background-color: #eaeaea !important;
     color: #111 !important;
+    margin-left: 5px !important;
+    margin-top: 5px !important;
 }
 .dark.cc_dialog button.cc_b_ok {
     background-color: #eaeaea !important;
     color: #111 !important;
+    margin-left: 5px !important;
+    margin-top: 5px !important;
 }
 .dark.cc_dialog button.cc_b_ok:hover {
     border-color: white!important;
