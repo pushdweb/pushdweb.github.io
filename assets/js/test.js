@@ -314,7 +314,7 @@ function writeUserData(userId, name, email) {
     }
 }
 
-function displayNotification() {
+/*function displayNotification() {
     if(Notification.permission === 'granted') {
         navigator.serviceWorker.ready.then(function(registration) {
             registration.showNotification('Vibration Sample', {
@@ -328,7 +328,7 @@ function displayNotification() {
     else{
         console.log('not granted')
     }
-}
+}*/
 
   
 

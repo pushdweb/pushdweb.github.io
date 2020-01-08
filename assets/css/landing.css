@@ -965,11 +965,11 @@
     #footer {
 		color: #414f57;
 		font-family: "Source Sans Pro", Helvetica, sans-serif;
-		font-size: 14pt;
+		font-size: 12pt;
 		font-weight: 300;
 		line-height: 2;
 		letter-spacing: 0.2em;
-		text-transform: uppercase;
+		text-transform: none;
     }
 
 	#footer {
@@ -1052,3 +1052,26 @@
 		body.is-ie #wrapper {
 			height: 100%;
 		}
+
+/* Cookies */
+.dark.cc_dialog button.cc_b_cp {
+    background-color: #eaeaea !important;
+    color: #111 !important;
+}
+.dark.cc_dialog button.cc_b_ok {
+    background-color: #eaeaea !important;
+    color: #111 !important;
+}
+.dark.cc_dialog button.cc_b_ok:hover {
+    border-color: white!important;
+}
+.dark.cc_dialog button.cc_b_cp:hover {
+    border-color: white!important;
+}
+.dark.cookie-consent-preferences-overlay .cookie-consent-preferences-dialog .cc_cp_container .cc_cp_footer .cc_cp_f_save button {
+    background-color: #eaeaea !important;
+    color: #111 !important;
+}
+.dark.cookie-consent-preferences-overlay .cookie-consent-preferences-dialog .cc_cp_container .cc_cp_footer .cc_cp_f_save button:hover {
+    border-color: white!important;
+}

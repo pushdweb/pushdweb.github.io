@@ -64,7 +64,7 @@
         text-align: center;
         text-decoration: none;
         white-space: nowrap;
-        text-transform: capitalize;
+        text-transform: none;
         letter-spacing: normal;                
     }
     .chooser-show {
@@ -96,7 +96,7 @@
         text-align: center;
         text-decoration: none;
         white-space: nowrap;
-        text-transform: capitalize;
+        text-transform: none;
         letter-spacing: normal;                
     }
     .image-remove:hover {

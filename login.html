@@ -35,7 +35,11 @@
 				<!-- Footer -->
 					<footer id="footer">
 						<ul class="copyright">
-							<li>&copy; Pushd</li><li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
+							<li>&copy; Pushd</li>
+                            <li><a href="/terms.html" target="_blank">Terms &amp; Conditions</a></li>
+                            <li><a href="/privacy.html" target="_blank">Privacy Policy</a></li>
+                            <li><a href="/cookies.html" target="_blank">Cookie Policy</a></li>
+                            <li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
 						</ul>
 					</footer>
 
@@ -47,8 +51,18 @@
               integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
               crossorigin="anonymous"></script>
             <!-- The core Firebase JS SDK is always required and must be listed first -->
-            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
-            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js" cookie-consent="strictly-necessary"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js" cookie-consent="strictly-necessary"></script>
+        
+            <!-- Cookie Consent by https://www.PrivacyPolicies.com -->
+            <script type="text/javascript" src="//www.privacypolicies.com/public/cookie-consent/3.0.0/cookie-consent.js"></script>
+            <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+            cookieconsent.run({"notice_banner_type":"interstitial","consent_type":"express","palette":"dark","language":"en","website_name":"pushdapp","change_preferences_selector":"#changePreferences","cookies_policy_url":"https://pushdapp.com/cookies.html"});
+            });
+            </script>
+            <noscript><a href="https://www.PrivacyPolicies.com/cookie-consent/">Cookie Consent by Privacy Policies Generator</a></noscript>
+            <!-- End Cookie Consent -->
         
 			<script>
                 // Your web app's Firebase configuration
