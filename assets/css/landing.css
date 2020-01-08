@@ -13,6 +13,11 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
 /* Icon (alt) */
 
 	html, body, div, span, applet, object,
