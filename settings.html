@@ -9,7 +9,7 @@
 		<title>pushd</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/history.css" />
+		<link rel="stylesheet" href="assets/css/insights.css" />
         <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
 		<link rel="stylesheet" href="assets/css/ant-toast.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -48,7 +48,18 @@
                     <section id="main" style="background: white; text-align: center;">
                         <h1>Settings</h1>
                         <br>
-                        
+                        <div style="display: flex; justify-content: left; align-items: center; margin-bottom: 5%;">
+                            <p id="tagline" style="margin-bottom: 0px; margin-right: 5%;">Permanently delete all my notifications</p>
+                            <button style="margin-left: auto; min-width: 55%;" onclick="confirmedAction('notifications')">Delete Notifications</button>
+                        </div>
+                        <div style="display: flex; justify-content: left; align-items: center; margin-bottom: 5%;">
+                            <p id="tagline" style="margin-bottom: 0px; margin-right: 5%;">Permanently delete all my metrics</p>
+                            <button style="margin-left: auto; min-width: 55%;" onclick="confirmedAction('metrics')">Delete Metrics</button>
+                        </div>
+                        <div style="display: flex; justify-content: left; align-items: center; margin-bottom: 5%;">
+                            <p id="tagline" style="margin-bottom: 0px; margin-right: 5%;">Permanently delete my account</p>
+                            <button style="margin-left: auto; min-width: 55%;" onclick="confirmedAction('account')">Delete Account</button>
+                        </div>
                     </section>
                     
 
@@ -112,12 +123,69 @@
                         var uid = user.uid;
                     }
                     else {
-
+                        
                     }
                 }, function(error) {
                   console.log(error);
                 });
-            }             
+            }  
+            
+            function confirmedAction(action){
+                
+                switch(action){
+                    case 'notifications': 
+                        url = 'https://autoempushy.herokuapp.com/v1/delete-notifications'
+                        successMessage = 'Successfully deleted all notifications'
+                        redirect = false
+                        break
+                    case 'metrics': 
+                        url = 'https://autoempushy.herokuapp.com/v1/delete-metrics'
+                        successMessage = 'Successfully deleted all metrics'
+                        redirect = false
+                        break
+                    case 'account': 
+                        url = 'https://autoempushy.herokuapp.com/v1/delete-account'
+                        successMessage = 'Successfully deleted your account'
+                        redirect = true
+                        break
+                }
+                
+                uid = localStorage.getItem('userId')
+                if(uid!=null){
+                    console.log(uid)
+                    var formData = JSON.stringify({
+                        'userId': uid
+                    })
+
+                    $.ajax ({
+                        url: url,
+                        type: "POST",
+                        data: formData,
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        crossDomain: true,
+                        success: function(data) {
+                            try{
+                               if(data['success']){
+                                   Message.default.success(successMessage)
+                                   if(redirect){
+                                        localStorage.clear();
+                                        firebase.auth().signOut();
+                                        window.location.replace("/index.html");
+                                   }
+                               }
+                                else{
+                                    Message.default.error('Could not complete request. Try again later.')
+                                }
+                            }
+                            catch(err){}
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                            Message.default.error('Could not complete request. Try again later.')
+                        } 
+                    });
+                } 
+            }
 
         </script>
 

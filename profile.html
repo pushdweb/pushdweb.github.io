@@ -210,16 +210,22 @@
                             success: function(data) {
                                 try{
                                     
-                                    if(data['success']){                                        
+                                    if(data['success']){
                                         initSubscribe(data['snapshot']['applicationServerKey'])
                                         
                                         $('#profileName').text(data['snapshot']['name'])
                                         $('#editName').val(data['snapshot']['name'])
                                         
-                                        imageURL = 'data:image/jpeg;base64'+data['snapshot']['profileImage']
-                                        
-                                        resizeProfilerForIcon(imageURL)
-                                        $('#profileImage').attr('src', imageURL)
+                                        if(data['snapshot']['profileImage']!="" && data['snapshot']['profileImage']!=null  && data['snapshot']['profileImage']!="images/avatar.jpg"){
+                                            imageURL = 'data:image/jpeg;base64'+data['snapshot']['profileImage']
+                                            resizeProfilerForIcon(imageURL)
+                                            $('#profileImage').attr('src', imageURL)
+                                        }
+                                        else {
+                                            imageURL ='images/avatar.jpg'
+                                            resizeProfilerForIcon(imageURL)
+                                            $('#profileImage').attr('src', imageURL)
+                                        }
                                         
                                         $('#tagline').text(data['snapshot']['tagline'])
                                         $('#editTagline').val(data['snapshot']['tagline'])
@@ -227,7 +233,7 @@
                                         $('#profileName').show()
                                         $('#tagline').show()
                                         
-                                        if(data['snapshot']['twitterURL']!=""){
+                                        if(data['snapshot']['twitterURL']!="" && data['snapshot']['twitterURL']!=null){
                                             $('#twitterLink').attr('href', data['snapshot']['twitterURL'])
                                             $('#editTwitter').val(data['snapshot']['twitterURL'])
                                             $('#twitterField').show()
@@ -236,7 +242,7 @@
                                             $('#twitterField').hide()
                                         }
                                         
-                                        if(data['snapshot']['instagramURL']!=""){
+                                        if(data['snapshot']['instagramURL']!="" && data['snapshot']['instagramURL']!=null){
                                             $('#instagramLink').attr('href', data['snapshot']['instagramURL'])
                                             $('#editInstagram').val(data['snapshot']['instagramURL'])
                                             $('#instagramField').show()
@@ -245,7 +251,7 @@
                                             $('#instagramField').hide()
                                         }
                                         
-                                        if(data['snapshot']['facebookURL']!=""){
+                                        if(data['snapshot']['facebookURL']!="" && data['snapshot']['facebookURL']!=null){
                                             $('#facebookLink').attr('href', data['snapshot']['facebookURL'])
                                             $('#editFacebook').val(data['snapshot']['facebookURL'])
                                             $('#facebookField').show()
@@ -481,11 +487,11 @@
                 }
                 
                 function settings() {
-                    Message.default.info('Feature coming soon')
+                    window.location.href = '/settings.html'
                 }
                 
                 function insights() {
-                    window.location.href = '/history.html'                 
+                    window.location.href = '/insights.html'                 
                 }
                 
                 function control() {

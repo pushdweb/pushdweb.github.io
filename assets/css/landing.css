@@ -1061,7 +1061,7 @@
 
 /* Cookies */
 .dark.cc_dialog {
-    background-color: transparent!important;
+    position: absolute!important;
     color: #fff;
 }
 .dark.cc_dialog .cc_dialog_text {
