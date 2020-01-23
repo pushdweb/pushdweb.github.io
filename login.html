@@ -148,7 +148,14 @@
                                             alert('An error occurred. Please try again later.')
                                         } 
                                     });
-                                    
+                                  try {
+                                      fbq('track', 'StartTrial', {
+                                        value: 0.05,
+                                        currency: 'EUR',
+                                        predicted_ltv: '2.00',
+                                      });
+                                  } catch(err){}
+                                  
                                 }
                                 else {
                                     localStorage.setItem('userId', uid)
